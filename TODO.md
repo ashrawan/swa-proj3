@@ -20,7 +20,7 @@
 | job-service          | 8083 |
 | recruiter-service    | 8084 |
 | --------------       | ---- |
-| notification-service | 8087 |
+| notification-service | 8087 | 
 | --------------       | ---- |
 | auth-service         | 8070 |
 
