@@ -1,4 +1,4 @@
-package com.swa.proj3commonmodule.dtos;
+package com.swa.proj3commonmodule.dto;
 
 import lombok.Data;
 

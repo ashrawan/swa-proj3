@@ -1,6 +1,6 @@
 package com.swa.candidateservice;
 
-import com.swa.proj3commonmodule.dtos.CandidateDTO;
+import com.swa.proj3commonmodule.dto.CandidateDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.CommandLineRunner;
