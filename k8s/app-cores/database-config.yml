@@ -1,0 +1,7 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: database-configs
+data:
+  auth_mysqlURL: k8-swa2-mysql
+  auth_dbName: auth-db

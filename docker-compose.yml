@@ -1,0 +1,127 @@
+version: '3.9'
+
+services:
+
+  # =============== MySQL =================
+  swa3-mysqldb:
+    container_name: swa3-mysqldb-container
+    image: mysql:latest
+    ports:
+      - 3307:3307
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+    healthcheck:
+      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+      timeout: 50s
+      retries: 3
+    restart: on-failure
+    volumes:
+      -   swa2_mysqldb:/var/lib/mysql
+
+  # Add as Required: =============== MongoDB, Cassandra, ElasticSearch =================
+  # swa3-mongodb
+  # swa3-cassandradb
+  # swa3-elasticdb
+
+
+  # =============== Services =================
+  auth-service:
+    container_name: proj3_auth-container
+    image: proj3_auth-service
+    ports:
+      - 8070:8070
+    restart: always
+    build:
+      context: ./auth-service
+      dockerfile: Dockerfile
+#    environment:
+#      MYSQL_URL: swa3-mysqldb
+#      MYSQL_PORT: 3307
+#    depends_on:
+#      swa2-mysql:
+#        condition: service_healthy
+
+  search-service:
+    container_name: proj3_search-container
+    image: proj3_search-service
+    ports:
+      - 8081:8081
+    restart: always
+    build:
+      context: ./search-service
+      dockerfile: Dockerfile
+  #    environment:
+  #      MYSQL_URL: swa2-mysqldb
+  #      MYSQL_PORT: 3307
+  #    depends_on:
+  #      swa2-mysql:
+  #        condition: service_healthy
+
+  candidate-service:
+    container_name: proj3_candidate-container
+    image: proj3_candidate-service
+    ports:
+      - 8082:8082
+    restart: always
+    build:
+      context: ./candidate-service
+      dockerfile: Dockerfile
+  #    environment:
+  #      MYSQL_URL: swa2-mysqldb
+  #      MYSQL_PORT: 3307
+  #    depends_on:
+  #      swa2-mysql:
+  #        condition: service_healthy
+
+  job-service:
+    container_name: proj3_job-container
+    image: proj3_job-service
+    ports:
+      - 8083:8083
+    restart: always
+    build:
+      context: ./job-service
+      dockerfile: Dockerfile
+  #    environment:
+  #      MYSQL_URL: swa2-mysqldb
+  #      MYSQL_PORT: 3307
+  #    depends_on:
+  #      swa2-mysql:
+  #        condition: service_healthy
+
+
+  recruiter-service:
+    container_name: proj3_recruiter-container
+    image: proj3_recruiter-service
+    ports:
+      - 8084:8084
+    restart: always
+    build:
+      context: ./recruiter-service
+      dockerfile: Dockerfile
+#    environment:
+#      MYSQL_URL: swa2-mysqldb
+#      MYSQL_PORT: 3307
+#    depends_on:
+#      swa2-mysql:
+#        condition: service_healthy
+
+  notification-service:
+    container_name: proj3_notification-container
+    image: proj3_notification-service
+    ports:
+      - 8087:8087
+    restart: always
+    build:
+      context: ./notification-service
+      dockerfile: Dockerfile
+  #    environment:
+  #      MYSQL_URL: swa2-mysqldb
+  #      MYSQL_PORT: 3307
+  #    depends_on:
+  #      swa2-mysql:
+  #        condition: service_healthy
+
+
+volumes:
+  swa2_mysqldb:
