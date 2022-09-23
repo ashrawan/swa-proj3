@@ -1,0 +1,12 @@
+server:
+  port: 8082
+
+
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+
+    #   Custom defined values
+    values:
+      candidate-topic: candidate-events

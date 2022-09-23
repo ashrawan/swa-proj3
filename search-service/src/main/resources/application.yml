@@ -1,0 +1,14 @@
+server:
+  port: 8081
+
+
+spring:
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: services-group
+
+    #   Custom defined values
+    values:
+      candidate-topic: candidate-events
+      job-topic: job-events
