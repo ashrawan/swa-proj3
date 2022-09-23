@@ -25,6 +25,7 @@ mvn clean install -DskipTests
 # If minkiube, also run -> minikube docker-env
 docker compose build
 
+# app-cores: All configs and DB, services: all services
 kubectl create -f k8s/app-cores
 kubectl create -f services
 

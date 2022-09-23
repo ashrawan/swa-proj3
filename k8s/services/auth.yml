@@ -9,7 +9,7 @@ spec:
     - port: 80
       nodePort: 30070 # exposing to local, to access this service
       targetPort: 8070
-  type: ClusterIP
+  type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment

@@ -21,7 +21,7 @@ spec:
       port: 3306
       nodePort: 30036 # exposing to local, to access this service
       targetPort: 3306
-  type: ClusterIP
+  type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
