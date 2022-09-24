@@ -1,51 +1,56 @@
 server:
   port: 8087
 
-#spring:
-#  mail:
-#    host: smtp.gmail.com
-#    port: 587
-#    username: sanjayakoju42@gmail.com
-#    password: qfqoyivjtcmufnii
-#    properties:
-#      mail:
-#        smtp:
-#          auth: true
-#          starttls:
-#            enable: true
-
-
 spring:
-#  mail:
-#    password: qfqoyivjtcmufnii
-#    username: sanjayakoju42@gmail.com
-#    host: smtp.gmail.com
-#    port: '587'
-##    protocol: smtp
-#    properties:
-#      mail:
-#        smtp:
-#          auth: 'true'
-#          starttls:
-#            enable: 'true'
-#          connection-timeout: '5000'
-#          write timeout: '5000'
-
-  # Mail Config
   mail:
+    host: smtp.gmail.com
+    username: sanjayakoju42@gmail.com
+    password: fxahxqzfghwliack
     properties:
       mail:
         smtp:
-          starttls:
-            enable: 'true'
-          timeout: '5000'
-          auth: 'true'
-          connectiontimeout: '5000'
-          writetimeout: '5000'
-          ssl:
-            trust: host
-    host: smtp.gmail.com
-    username: sanjayakoju42@gmail.com
-    password: qfqoyivjtcmufnii
-    port: '465'
+          auth: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+            fallback: false
+
+    #  mail:
+    #    password: fxahxqzfghwliack
+    #    username: sanjayakoju42@gmail.com
+    #    host: smtp.gmail.com
+    #    port: '587'
+    ##    protocol: smtp
+    #    properties:
+    #      mail:
+    #        smtp:
+    #          auth: 'true'
+    #          starttls:
+    #            enable: 'true'
+    #          connection-timeout: '5000'
+    #          write timeout: '5000'
+
+  # Mail Config
+  #  mail:
+  #    properties:
+  #      mail:
+  #        smtp:
+  #          starttls:
+  #            enable: 'true'
+  #          timeout: '5000'
+  #          auth: 'true'
+  #          connectiontimeout: '5000'
+  #          writetimeout: '5000'
+  #          ssl:
+  #            trust: host
+  #    host: smtp.gmail.com
+  #    username: sanjayakoju42@gmail.com
+  #    password: fxahxqzfghwliack
+  #    port: '587'
+
+support:
+  test:
+    email: testmailswa@gmail.com
+    password: sanjaya77
+
 
