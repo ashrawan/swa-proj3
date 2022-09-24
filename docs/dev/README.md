@@ -19,6 +19,9 @@ docker compose -f mongodb/docker-compose-mongodb.yml up
 docker compose -f mongodb/docker-compose-mongodb.yml down --remove-orphans
 ```
 
+> __Optional: MongoDB client__  
+> https://www.mongodb.com/docs/compass/current/install/
+
 ---
 
 ### Redis:
@@ -47,8 +50,7 @@ docker compose -f docker-compose-redis.yml down --remove-orphans
 ```
 
 
-> __Optional: To see and work with redis UI -__  
-> Install "another redis desktop manager".  
+> __Optional: Redis Client, To see and work with redis UI__  
 > From: (https://snapcraft.io/install/another-redis-desktop-manager/ubuntu)
 
 ---
