@@ -10,3 +10,14 @@ spring:
     #   Custom defined values
     values:
       candidate-topic: candidate-events
+
+  application:
+    name: candidate-service
+  data:
+    mongodb:
+      authentication-database: admin
+      username: ${MYSQL_USERNAME:root}
+      password: ${MYSQL_PASSWORD:root}
+      database: ${MYSQL_DB_NAME:candidate-db}
+      port: 27017
+      host: localhost
