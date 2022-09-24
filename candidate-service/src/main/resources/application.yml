@@ -15,9 +15,10 @@ spring:
     name: candidate-service
   data:
     mongodb:
+      uri: mongodb://localhost/${MYSQL_DB_NAME:candidate-db}
       authentication-database: admin
-      username: ${MYSQL_USERNAME:root}
-      password: ${MYSQL_PASSWORD:root}
-      database: ${MYSQL_DB_NAME:candidate-db}
+      username: ${MONGODB_USERNAME:root}
+      password: ${MONGODB_PASSWORD:root}
+      database: ${MONGODB_DB_NAME:candidate-db}
       port: 27017
       host: localhost

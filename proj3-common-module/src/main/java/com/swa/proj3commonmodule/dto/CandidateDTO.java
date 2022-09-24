@@ -1,10 +1,14 @@
 package com.swa.proj3commonmodule.dto;
 
+import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 @Data
 @Builder
+@AllArgsConstructor
+@NoArgsConstructor
 public class CandidateDTO {
 
     private String candidateID;
