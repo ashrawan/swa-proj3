@@ -17,7 +17,9 @@
    mvn clean install -DskipTests
    docker compose up
     ```
-
+  
+> Check docs/dev folder README, to start the required services. "MongoDB", "Kafka", "Redis" ..  
+  
 ### __Deployment K8S:__
 ```cmd
 mvn clean install -DskipTests

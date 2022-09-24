@@ -3,12 +3,22 @@ server:
 
 
 spring:
+
+# Kafka Config
   kafka:
     consumer:
       bootstrap-servers: localhost:9092
       group-id: services-group
 
-    #   Custom defined values
     values:
       candidate-topic: candidate-events
       job-topic: job-events
+
+
+# Redis Config
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
+    password: redis-pass

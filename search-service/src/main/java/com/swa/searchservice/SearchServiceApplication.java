@@ -4,10 +4,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.cache.annotation.EnableCaching;
 import org.springframework.context.annotation.Bean;
 import org.springframework.kafka.core.KafkaTemplate;
 
 @SpringBootApplication
+@EnableCaching
 public class SearchServiceApplication {
 
     @Autowired
@@ -17,11 +19,11 @@ public class SearchServiceApplication {
         SpringApplication.run(SearchServiceApplication.class, args);
     }
 
-    @Bean
-    CommandLineRunner commandLineRunner() {
-        return args -> {
-            kafkaTemplate.send("swa", "Testing from spring boot");
-        };
-    }
+//    @Bean
+//    CommandLineRunner commandLineRunner() {
+//        return args -> {
+//            kafkaTemplate.send("swa", "Testing from spring boot");
+//        };
+//    }
 
 }

@@ -16,7 +16,7 @@ services:
       retries: 3
     restart: on-failure
     volumes:
-      -   swa2_mysqldb:/var/lib/mysql
+      - swa2_mysqldb:/var/lib/mysql
 
   # Add as Required: =============== MongoDB, Cassandra, ElasticSearch =================
   # swa3-mongodb
