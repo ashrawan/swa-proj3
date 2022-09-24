@@ -4,6 +4,9 @@ import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import org.springframework.data.annotation.Id;
+import org.springframework.data.mongodb.core.mapping.DBRef;
+import org.springframework.data.mongodb.core.mapping.Document;
 
 import javax.persistence.*;
 import java.io.Serializable;
@@ -12,22 +15,23 @@ import java.util.List;
 
 
 
-@Entity
+//@Entity
 @Builder
+@Document(collection = "Recruiter")
 public class Recruiter implements Serializable {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private int recruiterId;
+    private String recruiterId;
     private String name;
     private String email;
     private String phone;
     private String recruiterCompany;
 
-    @ManyToMany(cascade = CascadeType.ALL)
+//    @ManyToMany(cascade = CascadeType.ALL)
+    @DBRef
     private List<Company> companies = new ArrayList<>();
 
-    public Recruiter(int recruiterId, String name, String email, String phone, String recruiterCompany, List<Company> companies) {
+    public Recruiter(String recruiterId, String name, String email, String phone, String recruiterCompany, List<Company> companies) {
         this.recruiterId = recruiterId;
         this.name = name;
         this.email = email;
@@ -39,11 +43,11 @@ public class Recruiter implements Serializable {
     public Recruiter() {
     }
 
-    public int getRecruiterId() {
+    public String getRecruiterId() {
         return recruiterId;
     }
 
-    public void setRecruiterId(int recruiterId) {
+    public void setRecruiterId(String recruiterId) {
         this.recruiterId = recruiterId;
     }
 

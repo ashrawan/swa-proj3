@@ -1,5 +1,6 @@
 package com.swa.recruiterservice.bootstrap;
 
+
 import com.swa.recruiterservice.domain.Company;
 import com.swa.recruiterservice.domain.Recruiter;
 import com.swa.recruiterservice.repository.CompanyRepository;
@@ -43,7 +44,10 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
         Company google = new Company();
         google.setName("google");
 
-
+        companyRepository.save(microsoft);
+        companyRepository.save(apple);
+        companyRepository.save(amazon);
+        companyRepository.save(google);
 
         Recruiter recruiter1 = new Recruiter();
         recruiter1.setName("John Doe");
@@ -64,6 +68,5 @@ public class Bootstrap implements ApplicationListener<ContextRefreshedEvent> {
 
         recruiterRepository.save(recruiter1);
         recruiterRepository.save(recruiter2);
-
     }
 }
