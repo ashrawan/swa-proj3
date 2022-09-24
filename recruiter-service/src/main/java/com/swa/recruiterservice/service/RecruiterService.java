@@ -8,7 +8,6 @@ import java.util.List;
 
 public interface RecruiterService {
     List<Recruiter> findAllRecruiters();
-
     List<Company> findAllCompanies();
     RecruiterDto createRecruiter(RecruiterDto recruiterDto);
 }

@@ -1,51 +1,44 @@
 package com.swa.recruiterservice.domain;
 
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-import javax.persistence.Id;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Data;
+import lombok.NoArgsConstructor;
+
+import javax.persistence.*;
+import java.io.Serializable;
+import java.util.ArrayList;
+import java.util.List;
+
+
 
 @Entity
-public class Recruiter {
+@Builder
+public class Recruiter implements Serializable {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private int recruiterId;
-    private String recruiterName;
-    private String recruiterEmail;
-    private String recruiterContact;
-    private String recruiterCompanyName;
+    private String name;
+    private String email;
+    private String phone;
+    private String recruiterCompany;
 
-    //no parameter constructor
-    public Recruiter() {
-        super();
-    }
+    @ManyToMany(cascade = CascadeType.ALL)
+    private List<Company> companies = new ArrayList<>();
 
-
-    //constructor without id
-    public Recruiter(String recruiterName, String recuiterEmail, String recuiterContact,
-                     String recuiterCompanyName) {
-        super();
-        this.recruiterName = recruiterName;
-        this.recruiterEmail = recuiterEmail;
-        this.recruiterContact = recuiterContact;
-        this.recruiterCompanyName = recuiterCompanyName;
-    }
-
-
-    //constructor of all attributes
-    public Recruiter(int recruiterId, String recruiterName, String recuiterEmail,
-                     String recuiterContact, String recuiterCompanyName) {
-        super();
+    public Recruiter(int recruiterId, String name, String email, String phone, String recruiterCompany, List<Company> companies) {
         this.recruiterId = recruiterId;
-        this.recruiterName = recruiterName;
-        this.recruiterEmail = recuiterEmail;
-        this.recruiterContact = recuiterContact;
-        this.recruiterCompanyName = recuiterCompanyName;
+        this.name = name;
+        this.email = email;
+        this.phone = phone;
+        this.recruiterCompany = recruiterCompany;
+        this.companies = companies;
     }
 
+    public Recruiter() {
+    }
 
-    //getter and setter
     public int getRecruiterId() {
         return recruiterId;
     }
@@ -54,45 +47,54 @@ public class Recruiter {
         this.recruiterId = recruiterId;
     }
 
-    public String getRecruiterName() {
-        return recruiterName;
+    public String getName() {
+        return name;
     }
 
-    public void setRecruiterName(String recruiterName) {
-        this.recruiterName = recruiterName;
+    public void setName(String name) {
+        this.name = name;
     }
 
-
-    public String getRecruiterEmail() {
-        return recruiterEmail;
+    public String getEmail() {
+        return email;
     }
 
-    public void setRecruiterEmail(String recuiterEmail) {
-        this.recruiterEmail = recuiterEmail;
+    public void setEmail(String email) {
+        this.email = email;
     }
 
-    public String getRecruiterContact() {
-        return recruiterContact;
+    public String getPhone() {
+        return phone;
     }
 
-    public void setRecruiterContact(String recuiterContact) {
-        this.recruiterContact = recuiterContact;
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 
-    public String getRecruiterCompanyName() {
-        return recruiterCompanyName;
+    public String getRecruiterCompany() {
+        return recruiterCompany;
     }
 
-    public void setRecruiterCompanyName(String recuiterCompanyName) {
-        this.recruiterCompanyName = recuiterCompanyName;
+    public void setRecruiterCompany(String recruiterCompany) {
+        this.recruiterCompany = recruiterCompany;
     }
 
-    //toString
+    public List<Company> getCompanies() {
+        return companies;
+    }
+
+    public void setCompanies(List<Company> companies) {
+        this.companies = companies;
+    }
+
     @Override
     public String toString() {
-        return "Recruiter [recruiterId=" + recruiterId + ", recruiterName=" + recruiterName + ", recuiterPassword="
-                 + ", recuiterEmail=" + recruiterEmail + ", recuiterContact=" + recruiterContact
-                + ", recuiterCompanyName=" + recruiterCompanyName + "]";
+        return "Recruiter{" +
+                "recruiterId=" + recruiterId +
+                ", name='" + name + '\'' +
+                ", email='" + email + '\'' +
+                ", phone='" + phone + '\'' +
+                ", recruiterCompany='" + recruiterCompany + '\'' +
+                '}';
     }
-
 }
