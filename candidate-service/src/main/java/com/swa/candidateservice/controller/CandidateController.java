@@ -19,6 +19,16 @@ public class CandidateController {
         return new ResponseEntity<>(candidateService.registerCandidate(candidateDTO), HttpStatus.OK);
     }
 
+    @GetMapping("/{id}")
+    public ResponseEntity<?> getById(@PathVariable String id) {
+        return new ResponseEntity<>(candidateService.findById(id), HttpStatus.OK);
+    }
+
+    @GetMapping("/all")
+    public ResponseEntity<?> getAllCandidate() {
+        return new ResponseEntity<>(candidateService.findAll(), HttpStatus.OK);
+    }
+
     @GetMapping
     public ResponseEntity<?> test() {
         return new ResponseEntity<>("test", HttpStatus.OK);
