@@ -1,0 +1,25 @@
+
+server:
+  port: 8083
+
+
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: localhost:9092
+
+    #   Custom defined values
+    custom:
+      candidate-topic: job-events
+
+  application:
+    name: job-service
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/${MONGODB_NAME:job-db}
+      #      authentication-database: admin
+      username: ${MONGODB_USERNAME:root}
+      password: ${MONGODB_PASSWORD:root}
+      database: ${MONGODB_DB_NAME:job-db}
+      port: 27017
+      host: localhost
