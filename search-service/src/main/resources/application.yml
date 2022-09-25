@@ -1,24 +1,45 @@
 server:
   port: 8081
 
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
 
 spring:
+  application:
+    name: search-service
 
-# Kafka Config
+  # Kafka Config
   kafka:
+    enabled: false
     consumer:
       bootstrap-servers: localhost:9092
       group-id: services-group
 
-    values:
+    custom:
+      enable-listeners: false # set this to false, to disable all kafka listeners
       candidate-topic: candidate-events
       job-topic: job-events
 
 
-# Redis Config
+  # Caching: Redis Config
   cache:
     type: redis
   redis:
     host: localhost
     port: 6379
     password: redis-pass
+
+# Tracing: Logs
+  sleuth:
+    sampler:
+      probability: 1
+  zipkin:
+    base-url: http://localhost:9411/

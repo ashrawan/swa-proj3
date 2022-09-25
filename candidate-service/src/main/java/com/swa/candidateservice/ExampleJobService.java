@@ -13,14 +13,15 @@ import java.util.UUID;
 @Component
 public class ExampleJobService {
 
-    @Value("${spring.kafka.values.candidate-topic}")
+    @Value("${spring.kafka.custom.candidate-topic}")
     private String candidateTopic;
 
     @Autowired
     private KafkaTemplate<String, CandidateDTO> kafkaCandidateTemplate;
 
 
-    @Bean
+//    Disabling Kafka Producer For development, to enable uncomment @Bean
+//    @Bean
     public CommandLineRunner commandLineRunner() {
         return args -> {
             CandidateDTO candidateDTO = new CandidateDTO();

@@ -2,6 +2,7 @@ package com.swa.searchservice.controller;
 
 import com.swa.proj3commonmodule.dto.CandidateDTO;
 import com.swa.searchservice.service.SearchService;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -11,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
+@Slf4j
 public class SearchController {
 
     @Autowired
@@ -18,6 +20,7 @@ public class SearchController {
 
     @RequestMapping(value = "/{candidateId}", method = RequestMethod.GET)
     public ResponseEntity<?> getCandidateById(@PathVariable String candidateId) {
+        log.info("API - getCandidateById called, ID {}", candidateId);
         CandidateDTO candidateDTO = searchService.getCandidateById(candidateId);
         return new ResponseEntity<>(candidateDTO, HttpStatus.OK);
     }
