@@ -35,6 +35,7 @@ public class RecruiterController {
 
         @PostMapping("/create-recruiter")
     public ResponseEntity<?> createRecruiter(@RequestBody RecruiterDto recruiterDto) {
+        log.info("Creating recruiters");
         RecruiterDto returnedDto = recruiterService.createRecruiter(recruiterDto);
         return new ResponseEntity<>(returnedDto, HttpStatus.CREATED);
     }
