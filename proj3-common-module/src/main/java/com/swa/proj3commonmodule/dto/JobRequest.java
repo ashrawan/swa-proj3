@@ -8,7 +8,7 @@ import lombok.*;
 @NoArgsConstructor
 @AllArgsConstructor
 @ToString
-public class JobKafkaDto {
+public class JobRequest {
 
     private String jobId;
     private String candidateId;

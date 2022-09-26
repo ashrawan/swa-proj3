@@ -11,6 +11,8 @@ spring:
     #   Custom defined values
     custom:
       candidate-topic: job-events
+      application_topic: application_topic
+      job_topic: job_topic
 
   application:
     name: job-service

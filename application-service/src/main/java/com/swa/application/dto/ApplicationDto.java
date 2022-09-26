@@ -1,7 +1,6 @@
-package com.swa.apply.dto;
+package com.swa.application.dto;
 
 import lombok.*;
-import org.springframework.data.mongodb.core.index.Indexed;
 
 import java.time.LocalDate;
 
@@ -9,9 +8,10 @@ import java.time.LocalDate;
 @NoArgsConstructor @AllArgsConstructor @Builder
 public class ApplicationDto {
 
-    private Integer id;
+    private String id;
     private float resumeVersion;
-    private Integer candidateId;
-    private Integer jobId;
+    private String candidateId;
+    private String jobId;
     private LocalDate date;
+    private Boolean status;
 }

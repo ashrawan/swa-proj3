@@ -1,35 +1,32 @@
 package com.swa.application.config;
 
-import com.swa.proj3commonmodule.response.JobResponse;
+import com.swa.application.model.Application;
+import com.swa.application.repository.ApplicationRepository;
+import com.swa.proj3commonmodule.response.ApplicationResponse;
+import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.kafka.annotation.KafkaListener;
 import org.springframework.stereotype.Component;
 
 @Component
-public class JobListener {
+@Slf4j
+public class ApplicationListener {
 
-    private JobResponse jobResponse;
-    private boolean flag = false;
+    @Autowired private ApplicationRepository applicationRepository;
 
-    @KafkaListener(topics = "job_topic", groupId="application-job-topic")
-    void listener(JobResponse jobResponse){
-        flag = true;
-        System.out.println("Listener received ::: "+jobResponse.toString()+ " ;)");
-        this.jobResponse = jobResponse;
-    }
+    @KafkaListener(topics = "job_topic", groupId = "application-job-topic"
+            , containerFactory = "kafkaListenerJsonFactory" //,autoStartup = "false"
+    )
+    void listener(ApplicationResponse response){
+        log.info("----- ApplicationListener received ::: "+response.toString()+ " ;)");
 
-    public JobResponse getJobResponse(){
-        JobResponse sendResponse = null;
-        if(flag){
-            sendResponse = jobResponse;
-            flag = false;
-        } else {
-            sendResponse = new JobResponse();
-            sendResponse.setHttpStatus(HttpStatus.PROCESSING);
-            sendResponse.setMessage("The server is waiting for a response. Please try again later!!");
+        if(response.getHttpStatus() == HttpStatus.FOUND){
+            Application application = applicationRepository.findByCandidateIdAndJobId(response.getCandidateId(), response.getJobId()).get();
+            application.setStatus(false);
+            applicationRepository.save(application);
         }
 
-        return sendResponse;
     }
 
 

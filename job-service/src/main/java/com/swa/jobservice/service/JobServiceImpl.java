@@ -3,11 +3,17 @@ package com.swa.jobservice.service;
 import com.swa.jobservice.entity.Job;
 import com.swa.jobservice.repository.JobRepository;
 import com.swa.proj3commonmodule.dto.JobDTO;
+import com.swa.proj3commonmodule.dto.JobRequest;
+import com.swa.proj3commonmodule.response.ApplicationResponse;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.http.HttpStatus;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -16,6 +22,14 @@ public class JobServiceImpl implements JobService{
 
     @Autowired
     private JobRepository jobRepository;
+
+
+    @Value("${spring.kafka.custom.job_topic}")
+    private String jobTopic;
+
+    @Autowired
+    private KafkaTemplate<String, ApplicationResponse> kafkaTemplate;
+
     @Override
     public JobDTO createJob(JobDTO jobDTO) {
         Job job = Job.builder()
@@ -66,5 +80,24 @@ public class JobServiceImpl implements JobService{
                     return jobDTO;
                 }).collect(Collectors.toList());
         return jobDTOList;
+    }
+
+    @Override
+    public HttpStatus existJob(JobRequest dto) {
+        log.info("----- checking job presence ");
+        Optional<Job> jobOpt = jobRepository.findById(dto.getJobId());
+        ApplicationResponse response = ApplicationResponse.builder()
+                .jobId(dto.getJobId())
+                .candidateId(dto.getCandidateId())
+                .build();
+        if(jobOpt.isPresent()){
+            response.setHttpStatus(HttpStatus.FOUND);
+        } else {
+            response.setHttpStatus(HttpStatus.NOT_FOUND);
+            response.setMessage("This job is not available.");
+        }
+
+        kafkaTemplate.send(jobTopic, response);
+        return response.getHttpStatus();
     }
 }

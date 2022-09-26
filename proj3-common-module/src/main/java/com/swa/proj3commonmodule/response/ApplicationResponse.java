@@ -5,8 +5,9 @@ import org.springframework.http.HttpStatus;
 
 @Setter @Getter @Builder
 @NoArgsConstructor @AllArgsConstructor
-public class JobResponse {
-    private String id;
+public class ApplicationResponse {
+    private String jobId;
+    private String candidateId;
     private HttpStatus httpStatus;
     private String message;
 

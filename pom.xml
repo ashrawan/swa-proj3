@@ -23,6 +23,7 @@
         <module>recruiter-service</module>
         <module>search-service</module>
         <module>notification-service</module>
+        <module>application-service</module>
     </modules>
 
 </project>

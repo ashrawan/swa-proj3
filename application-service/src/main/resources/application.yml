@@ -1,0 +1,41 @@
+
+server:
+  port: 8085
+
+spring:
+  application:
+    name: application-service
+  zipkin:
+    base-url: http://127.0.0.1:9411/
+
+  kafka:
+    bootstrap-servers: 127.0.0.1:9092
+    application_topic: application_topic
+    job_topic: job_topic
+
+  data:
+    mongodb:
+      uri: mongodb://localhost:27017/${MYSQL_DB_NAME:application-db}
+      #      authentication-database: admin
+#      username: ${MONGODB_USERNAME:root}
+#      password: ${MONGODB_PASSWORD:root}
+      database: ${MONGODB_DB_NAME:application-db}
+      port: 27017
+      host: localhost
+
+#  data:
+#    mongodb:
+#      host: localhost
+#      uri: mongodb://localhost:27017/${MYSQL_DB_NAME:application-db}
+#      port: 27017
+#      database: application-db
+#      username: root
+#      password: example
+
+#spring.data.mongodb.authentication-database=admin
+#spring.data.mongodb.auto-index-creation=true
+
+
+#app:
+#  url:
+#    job: ${JOB_URL:localhost:8081}
