@@ -21,7 +21,7 @@ public class ExampleJobService {
 
 
 //    Disabling Kafka Producer For development, to enable uncomment @Bean
-//    @Bean
+    @Bean
     public CommandLineRunner commandLineRunner() {
         return args -> {
             CandidateDTO candidateDTO = new CandidateDTO();

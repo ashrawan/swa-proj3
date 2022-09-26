@@ -1,8 +1,8 @@
 package com.swa.proj3commonmodule.security;
 
-import com.swa.proj3commonmodule.security.enums.UserRole;
 import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.swa.proj3commonmodule.security.enums.UserRole;
 import io.jsonwebtoken.*;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.http.HttpHeaders;
@@ -16,34 +16,15 @@ import java.util.Set;
 
 
 @Slf4j
-public class JwtTokenProvider {
+public class JwtTokenParser {
 
     private static final String HEADER_AUTHORIZATION = HttpHeaders.AUTHORIZATION;
     private static final String BEARER_TOKEN_START = "Bearer ";
 
     private String secretKey;
-    private Long validityInSeconds;
 
-    public JwtTokenProvider(String secretKey, long validityInSeconds) {
+    public JwtTokenParser(String secretKey) {
         this.secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
-        this.validityInSeconds = validityInSeconds;
-    }
-
-    public String createToken(Authentication authentication) throws JsonProcessingException {
-        CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();
-        Claims claims = Jwts.claims().setSubject(customUserDetails.getUsername());
-
-        claims.put("userId", String.valueOf(customUserDetails.getId()));
-        claims.put("username", customUserDetails.getUsername());
-        ObjectMapper objectMapper = new ObjectMapper();
-        claims.put("roles", objectMapper.writeValueAsString(customUserDetails.getUserRoles()));
-
-        return Jwts.builder()
-                .setClaims(claims)
-                .setIssuedAt(new Date())
-                .setExpiration(new Date(System.currentTimeMillis() + (validityInSeconds * 1000)))
-                .signWith(SignatureAlgorithm.HS256, secretKey)
-                .compact();
     }
 
     public String getTokenFromRequestHeader(HttpServletRequest req) {

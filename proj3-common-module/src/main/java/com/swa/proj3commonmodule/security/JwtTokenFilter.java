@@ -13,17 +13,17 @@ import java.io.IOException;
 
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenParser jwtTokenParser;
 
-    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
+    public JwtTokenFilter(JwtTokenParser jwtTokenParser) {
+        this.jwtTokenParser = jwtTokenParser;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        String token = jwtTokenProvider.getTokenFromRequestHeader(request);
-        if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token, request)) {
-            Authentication auth = jwtTokenProvider.getAuthenticationFromTokenString(token, request);
+        String token = jwtTokenParser.getTokenFromRequestHeader(request);
+        if (StringUtils.hasText(token) && jwtTokenParser.validateToken(token, request)) {
+            Authentication auth = jwtTokenParser.getAuthenticationFromTokenString(token, request);
             if (auth != null) {
                 SecurityContextHolder.getContext().setAuthentication(auth);
             }
