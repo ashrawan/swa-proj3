@@ -1,8 +1,7 @@
-package com.swa.searchservice.config;
+package com.swa.candidateservice.config;
 
 import com.swa.proj3commonmodule.security.JwtTokenFilter;
 import com.swa.proj3commonmodule.security.JwtTokenParser;
-import com.swa.proj3commonmodule.security.enums.UserRole;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -26,9 +25,8 @@ public class WebSecurityConfig {
 
         return http.csrf().disable().httpBasic().and()
                 .authorizeRequests(ar -> ar
-                        .antMatchers("/job/**").permitAll()
                         .antMatchers("/test/**").permitAll()
-                        .antMatchers("/candidate/**").hasAnyAuthority(UserRole.ROLE_CANDIDATE.getValue(), UserRole.ROLE_RECRUITER.getValue())
+                        .antMatchers("/**").permitAll() // TODO remove this
                         .anyRequest().authenticated()
                 )
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)

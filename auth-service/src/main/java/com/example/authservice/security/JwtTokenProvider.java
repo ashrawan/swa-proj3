@@ -10,6 +10,8 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.core.Authentication;
 import org.springframework.stereotype.Component;
 
+import javax.annotation.PostConstruct;
+import java.util.Base64;
 import java.util.Date;
 
 @Component
@@ -20,6 +22,11 @@ public class JwtTokenProvider {
 
     @Value("${app.jwt.token.expire-seconds}")
     private long validityInSeconds;
+
+    @PostConstruct
+    public void init() {
+        this.secretKey = Base64.getEncoder().encodeToString(secretKey.getBytes());
+    }
 
     public String createToken(Authentication authentication) throws JsonProcessingException {
         CustomUserDetails customUserDetails = (CustomUserDetails) authentication.getPrincipal();

@@ -23,3 +23,8 @@ spring:
       database: ${MONGODB_DB_NAME:job-db}
       port: 27017
       host: localhost
+
+app:
+  jwt:
+    token:
+      secret-key: ${JWT_SECRET_KEY:swa-proj1-jwt-secret}

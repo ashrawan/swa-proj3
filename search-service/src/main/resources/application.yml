@@ -54,6 +54,7 @@ spring:
 
   # Tracing: Logs
   sleuth:
+    enabled: false
     sampler:
       probability: 1
   zipkin:

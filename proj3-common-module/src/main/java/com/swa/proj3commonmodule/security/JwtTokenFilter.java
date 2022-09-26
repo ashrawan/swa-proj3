@@ -1,5 +1,6 @@
 package com.swa.proj3commonmodule.security;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -11,6 +12,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 public class JwtTokenFilter extends OncePerRequestFilter {
 
     private JwtTokenParser jwtTokenParser;
@@ -21,12 +23,16 @@ public class JwtTokenFilter extends OncePerRequestFilter {
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
+        log.info("Jwt Token Filter, processing authenticated request");
         String token = jwtTokenParser.getTokenFromRequestHeader(request);
         if (StringUtils.hasText(token) && jwtTokenParser.validateToken(token, request)) {
             Authentication auth = jwtTokenParser.getAuthenticationFromTokenString(token, request);
             if (auth != null) {
                 SecurityContextHolder.getContext().setAuthentication(auth);
+                log.info("Authentication Object set for the current request");
             }
+        } else {
+            log.error("Couldn't process the Authentication for the current request");
         }
         chain.doFilter(request, response);
     }
