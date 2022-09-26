@@ -39,17 +39,17 @@ public class KafkaConsumerConfig {
     }
 
     @Bean
-    public <T> ConcurrentKafkaListenerContainerFactory<?, ?> kafkaCandidateDTOListenerJsonFactory() {
+    public <T> ConcurrentKafkaListenerContainerFactory<?, ?> kafkaListenerJsonFactory() {
 
         ConcurrentKafkaListenerContainerFactory<String, ?> factory = new ConcurrentKafkaListenerContainerFactory<>();
-        DefaultKafkaConsumerFactory<String, Object> candidateDTODefaultKafkaConsumerFactory = new DefaultKafkaConsumerFactory<>(consumerJsonConfig());
+        DefaultKafkaConsumerFactory<String, Object> defaultKafkaConsumerFactory = new DefaultKafkaConsumerFactory<>(consumerJsonConfig());
 
         final JsonDeserializer<Object> valueDeserializer = new JsonDeserializer<>();
         valueDeserializer.addTrustedPackages("com.swa.proj3commonmodule.dto");
-        candidateDTODefaultKafkaConsumerFactory.setValueDeserializer(valueDeserializer);
-        candidateDTODefaultKafkaConsumerFactory.setKeyDeserializer(new StringDeserializer());
+        defaultKafkaConsumerFactory.setValueDeserializer(valueDeserializer);
+        defaultKafkaConsumerFactory.setKeyDeserializer(new StringDeserializer());
 
-        factory.setConsumerFactory(candidateDTODefaultKafkaConsumerFactory);
+        factory.setConsumerFactory(defaultKafkaConsumerFactory);
         factory.setMessageConverter(new StringJsonMessageConverter());
         factory.setBatchListener(true);
         return factory;
