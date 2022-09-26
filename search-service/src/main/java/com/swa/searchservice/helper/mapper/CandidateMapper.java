@@ -1,4 +1,4 @@
-package com.swa.searchservice.mapper;
+package com.swa.searchservice.helper.mapper;
 
 
 import com.swa.proj3commonmodule.dto.CandidateDTO;

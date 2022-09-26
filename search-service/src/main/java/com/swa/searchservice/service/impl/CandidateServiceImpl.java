@@ -3,7 +3,7 @@ package com.swa.searchservice.service.impl;
 import com.swa.proj3commonmodule.dto.CandidateDTO;
 import com.swa.proj3commonmodule.exceptions.NotFoundException;
 import com.swa.searchservice.entity.CandidateTable;
-import com.swa.searchservice.mapper.CandidateMapper;
+import com.swa.searchservice.helper.mapper.CandidateMapper;
 import com.swa.searchservice.repository.CandidateRepository;
 import com.swa.searchservice.service.CandidateService;
 import lombok.extern.slf4j.Slf4j;

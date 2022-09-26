@@ -9,7 +9,7 @@ import org.springframework.stereotype.Service;
 @Slf4j
 public class ConsumerService {
 
-    @KafkaListener(topics = {"${spring.kafka.custom.candidate-topic}"}, containerFactory = "kafkaListenerJsonFactory",
+    @KafkaListener(topics = {"${spring.kafka.custom.candidate-topic}"}, containerFactory = "kafkaCandidateDTOListenerJsonFactory",
             groupId = "${spring.kafka.consumer.group-id}", autoStartup = "${spring.kafka.custom.enable-listeners}")
     public void consumeSuperHero(CandidateDTO candidateDTO) {
         log.info("Received CandidateDTO {}", candidateDTO);
