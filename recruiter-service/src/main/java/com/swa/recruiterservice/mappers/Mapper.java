@@ -7,6 +7,7 @@ import org.springframework.stereotype.Component;
 @Component
 public class Mapper {
 
+
     public RecruiterDto recruiterToRecruiterDto(Recruiter recruiter){
         RecruiterDto recruiterDto = RecruiterDto.builder()
                 .name(recruiter.getName())

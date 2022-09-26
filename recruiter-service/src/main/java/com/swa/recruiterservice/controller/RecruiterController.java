@@ -1,30 +1,46 @@
 package com.swa.recruiterservice.controller;
 
-import com.swa.recruiterservice.domain.Company;
 import com.swa.recruiterservice.model.RecruiterDto;
 import com.swa.recruiterservice.service.RecruiterService;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
 
 @Slf4j
 @RestController
 @RequestMapping("/recruiter")
 public class RecruiterController {
 
-    private final RecruiterService recruiterService;
 
-    public RecruiterController(RecruiterService recruiterService) {
+    private final RecruiterService recruiterService;
+    private final KafkaTemplate<String, String> kafkaTemplate;
+
+    @Value("${kafka.topic}")
+    private String kafkatopic;
+
+
+    public RecruiterController(RecruiterService recruiterService, KafkaTemplate<String, String> kafkaTemplate) {
         this.recruiterService = recruiterService;
+        this.kafkaTemplate = kafkaTemplate;
     }
 
     @GetMapping("/all")
     public ResponseEntity<?> listRecuiter(){
         log.debug("Finding recuiters ");
+
         return new ResponseEntity<>(recruiterService.findAllRecruiters(), HttpStatus.OK);
+    }
+
+    //Testing kakfa
+    @GetMapping("/test")
+    @ResponseStatus(HttpStatus.OK)
+    public void test(){
+        log.debug("testing kafka");
+
+        kafkaTemplate.send(kafkatopic, recruiterService.findAllRecruiters().stream().findFirst().toString());
     }
 
     @GetMapping("/companies")
@@ -35,6 +51,7 @@ public class RecruiterController {
 
         @PostMapping("/create-recruiter")
     public ResponseEntity<?> createRecruiter(@RequestBody RecruiterDto recruiterDto) {
+        log.info("Creating recruiters");
         RecruiterDto returnedDto = recruiterService.createRecruiter(recruiterDto);
         return new ResponseEntity<>(returnedDto, HttpStatus.CREATED);
     }

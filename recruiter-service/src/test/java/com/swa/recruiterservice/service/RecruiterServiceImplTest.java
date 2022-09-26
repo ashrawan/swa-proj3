@@ -6,16 +6,12 @@ import com.swa.recruiterservice.mappers.Mapper;
 import com.swa.recruiterservice.model.RecruiterDto;
 import com.swa.recruiterservice.repository.CompanyRepository;
 import com.swa.recruiterservice.repository.RecruiterRepository;
-import org.junit.Before;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
-import org.junit.jupiter.api.extension.Extensions;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
-import org.mockito.MockitoAnnotations;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +20,7 @@ import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
 @ExtendWith(MockitoExtension.class)
+//@DataJpaTest
 class RecruiterServiceImplTest {
 
     @Mock
@@ -40,8 +37,8 @@ class RecruiterServiceImplTest {
 
 
     @BeforeEach()
-    public void setUp() throws Exception {
-
+    public void setUp() {
+        mapper = new Mapper();
     }
 
     @Test
@@ -61,7 +58,7 @@ class RecruiterServiceImplTest {
     @Test
     void findByName() {
 
-        Company returnCompany = Company.builder().companyId("abc").name("CompanyA").build();
+        Company returnCompany = getCompany();
 
         when(companyRepository.findByName(any())).thenReturn(returnCompany);
 
@@ -75,22 +72,35 @@ class RecruiterServiceImplTest {
 
     @Test
     void findAllCompanies() {
+        List<Recruiter> recruiters = getRecruiters();
+        recruiters.forEach(recruiter -> recruiter.getCompanies().add(getCompany()));
+
+        when(recruiterRepository.findAll()).thenReturn(recruiters);
+
+        List<Company> companies = recruiterService.findAllCompanies();
+
+        assertEquals(companies.size(), 1);
+
+        verify(recruiterRepository, times(1)).findAll();
 
     }
 
     @Test
     void createRecruiter() {
-//        Recruiter recruiterToSave = Recruiter.builder().name("companya").companies(getCompanies()).build();
-//
-//        when(recruiterRepository.save(any())).thenReturn(recruiterToSave);
-//
-//        RecruiterDto dto = new RecruiterDto();
-//        dto.setName(recruiterToSave.getName());
-//        dto.setCompanies(recruiterToSave.getCompanies());
+        Recruiter recruiterToSave = Recruiter.builder().name("companya").companies(getCompanies()).build();
 
-//        RecruiterDto savedRecruiter = recruiterService.createRecruiter(dto);
+        when(recruiterRepository.save(any())).thenReturn(recruiterToSave);
 
-//        assertNotNull(savedRecruiter);
+        RecruiterDto dto = mapper.recruiterToRecruiterDto(recruiterToSave);
+        Recruiter test = mapper.recruiterDtoToRecruiter(dto);
+
+        Recruiter savedRecruiter = recruiterRepository.save(test);
+
+        assertNotNull(savedRecruiter);
+    }
+
+    private Company getCompany() {
+        return Company.builder().companyId("abc").name("CompanyA").build();
     }
 
     private List<Recruiter> getRecruiters() {

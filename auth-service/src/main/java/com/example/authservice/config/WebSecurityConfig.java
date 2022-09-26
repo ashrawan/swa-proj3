@@ -2,7 +2,7 @@ package com.example.authservice.config;
 
 import com.example.authservice.security.CustomUserDetailsService;
 import com.swa.proj3commonmodule.security.JwtTokenFilter;
-import com.swa.proj3commonmodule.security.JwtTokenProvider;
+import com.swa.proj3commonmodule.security.JwtTokenParser;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -24,9 +24,6 @@ public class WebSecurityConfig {
 
     @Value("${app.jwt.token.secret-key}")
     private String secretKey;
-
-    @Value("${app.jwt.token.expire-seconds}")
-    private long validityInSeconds;
 
     private final CustomUserDetailsService customUserDetailsService;
 
@@ -57,14 +54,14 @@ public class WebSecurityConfig {
                 )
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
                 .and()
-                .addFilterBefore(new JwtTokenFilter(jwtTokenProvider()), UsernamePasswordAuthenticationFilter.class)
+                .addFilterBefore(new JwtTokenFilter(jwtTokenParser()), UsernamePasswordAuthenticationFilter.class)
                 .build();
     }
 
     @Bean
-    public JwtTokenProvider jwtTokenProvider() {
-        JwtTokenProvider jwtTokenProvider = new JwtTokenProvider(secretKey, validityInSeconds);
-        return jwtTokenProvider;
+    public JwtTokenParser jwtTokenParser() {
+        JwtTokenParser jwtTokenParser = new JwtTokenParser(secretKey);
+        return jwtTokenParser;
     }
 
     @Bean

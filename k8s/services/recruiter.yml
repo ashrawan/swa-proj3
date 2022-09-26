@@ -1,0 +1,67 @@
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: recruiter-service
+spec:
+  selector:
+    app: recruiter-app
+  ports:
+    - port: 80
+      nodePort: 30087 # expose to local
+      targetPort: 8087
+  type: NodePort
+---
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recruiter-deployment
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recruiter-app
+  template:
+    metadata:
+      labels:
+        app: recruiter-app
+    spec:
+      containers:
+        - name: recruiter-app
+          image: recruiter-service #to be confirmed
+          ports:
+            - containerPort: 8087
+#          env:
+#            - name: SPRING_PROFILES_ACTIVE
+#              value: prod
+#            - name: STOCK_SERVICE_URL
+#              value: stock-service
+#            - name: MYSQL_URL
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: database-configs
+#                  key: product_mysqlURL
+#
+#            - name: MYSQL_DB_NAME
+#              valueFrom:
+#                configMapKeyRef:
+#                  name: database-configs
+#                  key: product_dbName
+#            - name: JWT_SECRET_KEY
+#              valueFrom:
+#                secretKeyRef:
+#                  name: app-secret
+#                  key: jwt-secret-key
+#            - name: MYSQL_USERNAME
+#              valueFrom:
+#                secretKeyRef:
+#                  name: database-secret
+#                  key: username
+#            - name: MYSQL_PASSWORD
+#              valueFrom:
+#                secretKeyRef:
+#                  name: database-secret
+#                  key: password
+
+          imagePullPolicy: Never

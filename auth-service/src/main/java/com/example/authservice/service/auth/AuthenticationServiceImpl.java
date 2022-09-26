@@ -2,14 +2,16 @@ package com.example.authservice.service.auth;
 
 import com.example.authservice.entities.User;
 import com.example.authservice.repo.UserRepository;
+import com.example.authservice.security.JwtTokenProvider;
 import com.example.authservice.service.auth.dtos.AuthResponseDTO;
 import com.example.authservice.service.auth.dtos.LoginRequestDTO;
 import com.example.authservice.service.auth.dtos.RegisterUserRequestDTO;
 import com.example.authservice.service.auth.dtos.UserDTO;
 import com.fasterxml.jackson.core.JsonProcessingException;
-import com.swa.proj3commonmodule.security.JwtTokenProvider;
+import com.swa.proj3commonmodule.security.JwtTokenParser;
 import com.swa.proj3commonmodule.security.enums.UserRole;
 import lombok.RequiredArgsConstructor;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
@@ -18,6 +20,7 @@ import org.springframework.security.core.AuthenticationException;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
+import javax.annotation.PostConstruct;
 import java.util.Set;
 
 @Service
@@ -25,7 +28,9 @@ import java.util.Set;
 public class AuthenticationServiceImpl implements AuthenticationService {
 
     private final AuthenticationManager authenticationManager;
+
     private final JwtTokenProvider jwtTokenProvider;
+
     private final UserRepository userRepository;
 
     private final PasswordEncoder passwordEncoder;
