@@ -5,7 +5,12 @@ import com.swa.candidateservice.repository.CandidateRepository;
 import com.swa.proj3commonmodule.dto.CandidateDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
+import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
+import org.springframework.util.concurrent.ListenableFuture;
+import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import java.util.List;
 import java.util.Optional;
@@ -15,6 +20,11 @@ import java.util.stream.Collectors;
 @Slf4j
 public class CandidateServiceImpl implements CandidateService {
 
+    @Value("${spring.kafka.custom.candidate-topic}")
+    private String candidateTopic;
+
+    @Autowired
+    private KafkaTemplate<String, CandidateDTO> kafkaTemplate;
     @Autowired
     CandidateRepository candidateRepository;
 
@@ -28,6 +38,18 @@ public class CandidateServiceImpl implements CandidateService {
                 .build();
         Candidate saveCandidate = candidateRepository.save(candidate);
         candidateDTO.setCandidateID(saveCandidate.getCandidateID());
+        ListenableFuture<SendResult<String, CandidateDTO>> listenableFuture = kafkaTemplate.send(candidateTopic, candidateDTO);
+        listenableFuture.addCallback(new ListenableFutureCallback<SendResult<String, CandidateDTO>>() {
+            @Override
+            public void onFailure(Throwable ex) {
+                handleFailure(candidateDTO, ex);
+            }
+
+            @Override
+            public void onSuccess(SendResult<String, CandidateDTO> result) {
+                handleSuccess(result);
+            }
+        });
         return candidateDTO;
     }
 
@@ -66,5 +88,18 @@ public class CandidateServiceImpl implements CandidateService {
                     return candidateDTO;
                 }).collect(Collectors.toList());
         return candidateDTOList;
+    }
+
+    private void handleFailure(CandidateDTO candidateDTO, Throwable ex) {
+        log.error("Error sending the Message and the exception is {} ",ex.getMessage());
+        try {
+            throw ex;
+        } catch (Throwable throwable) {
+            log.error("Error in OnFailure: {} ",ex.getMessage());
+        }
+    }
+
+    private void handleSuccess(SendResult<String, CandidateDTO> result) {
+        log.info("Message Send Successfully :", result.getRecordMetadata());
     }
 }
