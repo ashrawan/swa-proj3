@@ -24,7 +24,7 @@ spring:
       password: cassandra
       port: 9042
       local-datacenter: datacenter1
-      schema-action: create_if_not_exists
+      schema-action: recreate_drop_unused
       request:
         timeout: 10s
       connection:

@@ -3,9 +3,6 @@ package com.swa.searchservice.service.impl;
 import com.swa.proj3commonmodule.dto.JobDTO;
 import com.swa.proj3commonmodule.exceptions.NotFoundException;
 import com.swa.searchservice.entity.JobTable;
-import com.swa.searchservice.helper.cassandra.CassandraHelperUtil;
-import com.swa.searchservice.helper.cassandra.CassandraPage;
-import com.swa.searchservice.helper.cassandra.Paginated;
 import com.swa.searchservice.helper.mapper.JobMapper;
 import com.swa.searchservice.repository.JobRepository;
 import com.swa.searchservice.service.JobService;
@@ -14,10 +11,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
-import org.springframework.data.cassandra.core.query.CassandraPageRequest;
-import org.springframework.data.domain.Slice;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
 import java.util.UUID;
 
 @Service
@@ -32,13 +28,9 @@ public class JobServiceImpl implements JobService {
 
     @Cacheable(value = "jobs", key = "'all'", condition = "#result != null && result.size() > 0")
     @Override
-    public CassandraPage<JobTable> getAllJobs(Paginated paginated) {
-        CassandraPageRequest cassandraPageRequest = CassandraHelperUtil
-                .createCassandraPageRequest(paginated.getLimit(), paginated.getPagingState());
-        final Slice<JobTable> jobTableSlice = jobRepository.findAll(cassandraPageRequest);
-        CassandraPage<JobTable> jobTableCassandraPage = new CassandraPage<>(jobTableSlice);
-//        List<JobDTO> jobDTOS = jobMapper.toDtoList(jobTableSlice.getContent());
-        return jobTableCassandraPage;
+    public List<JobDTO> getAllJobs() {
+        List<JobTable> jobTableList = jobRepository.findAll();
+        return jobMapper.toDtoList(jobTableList);
     }
 
     @CachePut(value = "jobs", condition = "#result.jobId != null", key = "#result.jobId")
