@@ -21,7 +21,8 @@
         <module>job-service</module>
         <module>candidate-service</module>
         <module>recruiter-service</module>
-        <module>search-service</module>
+<!--        <module>search-service</module>-->
+        <module>search-service-elastic</module>
         <module>notification-service</module>
         <module>application-service</module>
     </modules>
