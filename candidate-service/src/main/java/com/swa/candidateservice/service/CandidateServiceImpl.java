@@ -30,6 +30,7 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     public CandidateDTO registerCandidate(CandidateDTO candidateDTO) {
+        log.info("Candidate is Saving ...");
         Candidate candidate = Candidate.builder()
                 .address(candidateDTO.getAddress())
                 .fullName(candidateDTO.getFullName())
@@ -50,6 +51,7 @@ public class CandidateServiceImpl implements CandidateService {
                 handleSuccess(result);
             }
         });
+        log.info("Candidate Save Successfully");
         return candidateDTO;
     }
 
@@ -68,6 +70,7 @@ public class CandidateServiceImpl implements CandidateService {
                 .skillDesc(candidate.getSkillDesc())
                 .address(candidate.getAddress())
                 .build();
+        log.info("Candidate Fetch Success with ID : ",id);
         return candidateDTO;
     }
 
@@ -75,6 +78,7 @@ public class CandidateServiceImpl implements CandidateService {
     public List<CandidateDTO> findAll() {
         List<Candidate> candidateList = candidateRepository.findAll();
         if (candidateList == null) {
+            log.info("Candidate is Empty");
             throw new RuntimeException("Candidates is Empty");
         }
         List<CandidateDTO> candidateDTOList = candidateList.stream()
@@ -87,6 +91,7 @@ public class CandidateServiceImpl implements CandidateService {
                     candidateDTO.setSkillDesc(candidate.getSkillDesc());
                     return candidateDTO;
                 }).collect(Collectors.toList());
+        log.info("Candidate List Fetch Successfully");
         return candidateDTOList;
     }
 

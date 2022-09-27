@@ -11,8 +11,11 @@ spring:
     custom:
       candidate-topic: candidate-events
 
+  # Service Name
   application:
     name: candidate-service
+
+  # Mongo DB Config
   data:
     mongodb:
       uri: mongodb://localhost:27017/${MONGO_INITDB_DATABASE:candidate-db}
@@ -23,6 +26,13 @@ spring:
       port: 27017
       host: localhost
       auto-index-creation: true
+
+  # Sleuth and Zipkin Config (Used for distributed tracing and logs)
+  sleuth:
+    sampler:
+      percentage: 1 # 1 Indicate Sleuth send 100 percent log to the zipkin (by default for performance issue spring sleuth send 10 percent log to zipkin in enterprise)
+  zipkin:
+    baseUrl: http://localhost:9411/
 
 app:
   jwt:
