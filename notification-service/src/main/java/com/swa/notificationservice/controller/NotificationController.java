@@ -1,8 +1,8 @@
 package com.swa.notificationservice.controller;
 
-import com.swa.notificationservice.dto.CandidateEmailDto;
-import com.swa.notificationservice.dto.RecruiterEmailDto;
+
 import com.swa.notificationservice.service.EmailSenderService;
+import com.swa.proj3commonmodule.dto.EmailDto;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -19,14 +19,14 @@ public class NotificationController {
     EmailSenderService emailSenderService;
 
     @PostMapping("/candidate/send-email")
-    public ResponseEntity<?> sendCandidateNotification(@RequestBody CandidateEmailDto candidateEmailDto) {
-        emailSenderService.sendMail(candidateEmailDto.getEmail(), candidateEmailDto.getSubject(), candidateEmailDto.getMessage());
+    public ResponseEntity<?> sendCandidateNotification(@RequestBody EmailDto emailDto) {
+        emailSenderService.sendMail(emailDto);
         return new ResponseEntity<>("Mail Send Successfully...",HttpStatus.OK);
     }
 
     @PostMapping("/recruiter/send-email")
-    public ResponseEntity<?> sendRecruiterNotification(@RequestBody RecruiterEmailDto recruiterEmailDto) {
-        emailSenderService.sendMail(recruiterEmailDto.getEmail(), recruiterEmailDto.getSubject(), recruiterEmailDto.getMessage());
+    public ResponseEntity<?> sendRecruiterNotification(@RequestBody EmailDto emailDto) {
+        emailSenderService.sendMail(emailDto);
         return new ResponseEntity<>("Mail Send Successfully...",HttpStatus.OK);
     }
 }

@@ -11,6 +11,9 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -31,6 +34,9 @@ public class CandidateServiceTest {
 
     @InjectMocks
     private CandidateServiceImpl candidateService;
+
+    @Autowired
+    private KafkaTemplate<String, CandidateDTO> kafkaTemplate;
 
     @BeforeEach
     public void beforeEach() {

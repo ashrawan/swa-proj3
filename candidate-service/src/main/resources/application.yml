@@ -10,6 +10,7 @@ spring:
     #   Custom defined values
     custom:
       candidate-topic: candidate-events
+      notification-topic: notification-events
 
   # Service Name
   application:

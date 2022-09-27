@@ -2,6 +2,17 @@ server:
   port: 8087
 
 spring:
+
+  # Kafka Config
+  kafka:
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: services-group
+    custom:
+      enable-listeners: true # Set this false, to disable all kafka Listeners
+      notification-topic: notification-events
+
+  # Mail config
   mail:
     host: smtp.gmail.com
     username: sanjayakoju42@gmail.com
