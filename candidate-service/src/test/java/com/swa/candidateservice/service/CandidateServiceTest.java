@@ -11,8 +11,6 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.ArrayList;
@@ -30,13 +28,13 @@ public class CandidateServiceTest {
     private Mapper mapper;
 
     @Mock
+    private KafkaTemplate<String, CandidateDTO> kafkaTemplate;
+
+    @Mock
     private CandidateRepository candidateRepository;
 
     @InjectMocks
     private CandidateServiceImpl candidateService;
-
-    @Autowired
-    private KafkaTemplate<String, CandidateDTO> kafkaTemplate;
 
     @BeforeEach
     public void beforeEach() {

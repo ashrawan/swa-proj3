@@ -2,6 +2,8 @@ package com.swa.candidateservice.controller;
 
 import com.swa.candidateservice.service.CandidateService;
 import com.swa.proj3commonmodule.dto.CandidateDTO;
+import io.github.resilience4j.circuitbreaker.annotation.CircuitBreaker;
+import io.github.resilience4j.retry.annotation.Retry;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -15,6 +17,7 @@ public class CandidateController {
     CandidateService candidateService;
 
     @PostMapping("/create-candidate-profile")
+    @CircuitBreaker(name = "defaultsForCandidateServiceApp", fallbackMethod = "candidateServiceFallback")
     public ResponseEntity<?> createCandidateProfile(@RequestBody CandidateDTO candidateDTO) {
         return new ResponseEntity<>(candidateService.registerCandidate(candidateDTO), HttpStatus.OK);
     }
@@ -25,6 +28,7 @@ public class CandidateController {
     }
 
     @GetMapping("/all")
+    @Retry(name = "retryForCandidates", fallbackMethod = "candidateServiceFallback")
     public ResponseEntity<?> getAllCandidate() {
         return new ResponseEntity<>(candidateService.findAll(), HttpStatus.OK);
     }
@@ -32,5 +36,9 @@ public class CandidateController {
     @GetMapping
     public ResponseEntity<?> test() {
         return new ResponseEntity<>("test", HttpStatus.OK);
+    }
+
+    private CandidateDTO candidateServiceFallback(CandidateDTO candidateDTO, Throwable throwable) {
+        return candidateService.registerCandidate(candidateDTO);
     }
 }
