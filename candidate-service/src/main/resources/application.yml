@@ -39,3 +39,25 @@ app:
   jwt:
     token:
       secret-key: ${JWT_SECRET_KEY:swa-proj1-jwt-secret}
+
+# Circuit Breaker Config
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true # Default false
+    instances:
+      defaultsForCandidateServiceApp: # Instance name
+        minimumNumberOfCalls: 5 # By Default 50 calls
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30000
+        permitNumberOfCallsInHalfOpenState: 2
+
+  retry:
+    configs:
+      default:
+        registerHealthIndicator: true
+    instances:
+      retryForCandidates:
+        maxRetryAttempts: 3
+        waitDuration: 2000

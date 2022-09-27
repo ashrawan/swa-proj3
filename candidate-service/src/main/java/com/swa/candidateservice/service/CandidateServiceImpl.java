@@ -7,10 +7,7 @@ import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.kafka.core.KafkaTemplate;
-import org.springframework.kafka.support.SendResult;
 import org.springframework.stereotype.Service;
-import org.springframework.util.concurrent.ListenableFuture;
-import org.springframework.util.concurrent.ListenableFutureCallback;
 
 import java.util.List;
 import java.util.Optional;
@@ -39,18 +36,7 @@ public class CandidateServiceImpl implements CandidateService {
                 .build();
         Candidate saveCandidate = candidateRepository.save(candidate);
         candidateDTO.setCandidateID(saveCandidate.getCandidateID());
-        ListenableFuture<SendResult<String, CandidateDTO>> listenableFuture = kafkaTemplate.send(candidateTopic, candidateDTO);
-        listenableFuture.addCallback(new ListenableFutureCallback<SendResult<String, CandidateDTO>>() {
-            @Override
-            public void onFailure(Throwable ex) {
-                handleFailure(candidateDTO, ex);
-            }
-
-            @Override
-            public void onSuccess(SendResult<String, CandidateDTO> result) {
-                handleSuccess(result);
-            }
-        });
+        kafkaTemplate.send(candidateTopic, candidateDTO);
         log.info("Candidate Save Successfully");
         return candidateDTO;
     }
@@ -95,16 +81,4 @@ public class CandidateServiceImpl implements CandidateService {
         return candidateDTOList;
     }
 
-    private void handleFailure(CandidateDTO candidateDTO, Throwable ex) {
-        log.error("Error sending the Message and the exception is {} ",ex.getMessage());
-        try {
-            throw ex;
-        } catch (Throwable throwable) {
-            log.error("Error in OnFailure: {} ",ex.getMessage());
-        }
-    }
-
-    private void handleSuccess(SendResult<String, CandidateDTO> result) {
-        log.info("Message Send Successfully :", result.getRecordMetadata());
-    }
 }
