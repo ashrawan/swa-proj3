@@ -12,7 +12,7 @@ spec:
 apiVersion: v1
 kind: Service
 metadata:
-  name: k8-swa2-mysql
+  name: swa3-mysql
 spec:
   selector:
     app: mysql
@@ -44,8 +44,8 @@ spec:
             - name: MYSQL_ROOT_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: database-secret
-                  key: password
+                  name: core-secrets
+                  key: mysql_pass
           ports:
             - containerPort: 3306
           volumeMounts:

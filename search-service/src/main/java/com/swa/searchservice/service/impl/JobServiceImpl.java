@@ -6,8 +6,8 @@ import com.swa.searchservice.entity.JobTable;
 import com.swa.searchservice.helper.mapper.JobMapper;
 import com.swa.searchservice.repository.JobRepository;
 import com.swa.searchservice.service.JobService;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
@@ -18,13 +18,12 @@ import java.util.UUID;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class JobServiceImpl implements JobService {
 
-    @Autowired
-    private JobRepository jobRepository;
+    private final JobRepository jobRepository;
 
-    @Autowired
-    private JobMapper jobMapper;
+    private final JobMapper jobMapper;
 
     @Cacheable(value = "jobs", key = "'all'", condition = "#result != null && result.size() > 0")
     @Override

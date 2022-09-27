@@ -5,6 +5,8 @@ import com.swa.proj3commonmodule.dto.CandidateDTO;
 import com.swa.proj3commonmodule.dto.GenericMapper;
 import com.swa.searchservice.entity.CandidateTable;
 import org.springframework.stereotype.Component;
+import org.springframework.util.ObjectUtils;
+import org.springframework.util.StringUtils;
 
 import java.util.Arrays;
 import java.util.Set;
@@ -21,7 +23,9 @@ public class CandidateMapper implements GenericMapper<CandidateDTO, CandidateTab
         candidateDTO.setSummary(candidateTable.getSummary());
         candidateDTO.setFullName(candidateTable.getFullName());
         candidateDTO.setAddress(candidateTable.getAddress());
-        candidateDTO.setSkillDesc(candidateTable.getSkills().stream().collect(Collectors.joining()));
+        if (!ObjectUtils.isEmpty(candidateTable.getSkills())) {
+            candidateDTO.setSkillDesc(candidateTable.getSkills().stream().collect(Collectors.joining()));
+        }
         return candidateDTO;
     }
 
@@ -32,8 +36,10 @@ public class CandidateMapper implements GenericMapper<CandidateDTO, CandidateTab
         candidateTable.setFullName(candidateDTO.getFullName());
         candidateTable.setSummary(candidateDTO.getSummary());
         candidateTable.setAddress(candidateDTO.getAddress());
-        Set<String> skillsDesc = Arrays.stream(candidateDTO.getSkillDesc().split(",")).collect(Collectors.toSet());
-        candidateTable.setSkills(skillsDesc);
+        if (StringUtils.hasText(candidateDTO.getSkillDesc())) {
+            Set<String> skillsDesc = Arrays.stream(candidateDTO.getSkillDesc().split(",")).collect(Collectors.toSet());
+            candidateTable.setSkills(skillsDesc);
+        }
         return candidateTable;
     }
 

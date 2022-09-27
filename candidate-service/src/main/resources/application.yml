@@ -19,11 +19,11 @@ spring:
   # Mongo DB Config
   data:
     mongodb:
-      uri: mongodb://localhost:27017/${MONGO_INITDB_DATABASE:candidate-db}
+      uri: mongodb://${MONGO_URL:localhost}:${MONGO_PORT:27017}/${MONGO_DATABASE:candidate-db}
       authentication-database: admin
-#      username: ${MONGO_INITDB_ROOT_USERNAME:root}
-#      password: ${MONGO_INITDB_ROOT_PASSWORD:pswd}
-      database: ${MONGO_INITDB_DATABASE:candidate-db}
+#      username: ${MONGO_USERNAME:root}
+#      password: ${MONGO_PASSWORD:pswd}
+      database: ${MONGO_DATABASE:candidate-db}
       port: 27017
       host: localhost
       auto-index-creation: true

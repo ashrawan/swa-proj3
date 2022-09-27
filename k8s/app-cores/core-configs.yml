@@ -1,0 +1,31 @@
+apiVersion: v1
+kind: ConfigMap
+metadata:
+  name: core-configs
+data:
+  # Broker: Kafka
+  kafka_BootStrapServers: core-kafka-url # 9092
+  kafka_searchServiceGroupId: services-group
+  kafka_jobTopic: job-events
+  kafka_candidateTopic: candidate-events
+
+  # Caching: Redis
+  redis_host: redisHost
+  redis_port: 6379
+
+  # Tracing: Zipkin
+  zipkin_url: http://core-zipkin-url # 9411
+
+  # === Database ====
+  # Elastic Search
+  elastic_host: elastic-k8
+  elastic_port: 9200
+
+  # MySQL
+  mysql_url: swa23-mysql
+  mysql_authDBName: auth-db
+
+  # MySQL
+  mongo_url: swa3-mongo
+  mongo_candidateDBName: candidate-db
+  mongo_recruiterDBName: recruiter-db

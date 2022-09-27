@@ -1,0 +1,61 @@
+server:
+  port: ${SERVER_PORT:8081}
+
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+spring:
+  application:
+    name: ${APPLICATION_NAME:search-service}
+
+  # Kafka Config
+  kafka:
+    consumer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+      group-id: ${KAFKA_CONSUMER_GROUP_ID:services-group}
+
+    custom:
+      enable-listeners: ${KAFKA_ENABLE_LISTENERS:true} # set this to false, to disable all kafka listeners
+      candidate-topic: ${KAFKA_CANDIDATE_TOPIC:candidate-events}
+      job-topic: ${KAFKA_JOB_TOPIC:job-events}
+
+
+  # Caching: Redis Config
+  cache:
+    type: redis
+  redis:
+    host: ${REDIS_HOST:localhost}
+    port: ${REDIS_PORT:6379}
+    password: ${REDIS_PASSWORD:redis-pass}
+
+  # Tracing: Logs
+  sleuth:
+    enabled: ${SLEUTH_ENABLED:true}
+    sampler:
+      probability: 1
+  zipkin:
+    enabled: ${ZIPKIN_ENABLED:false}
+    base-url: ${ZIPKIN_URL:http://localhost:9411/}
+
+#logging:
+#  level:
+#    org.springframework.cache.*: trace
+
+app:
+  elastic:
+    host: ${ELASTIC_HOST:localhost}
+    port: ${ELASTIC_PORT:9200}
+    username: ${ELASTIC_USERNAME:}
+    password: ${ELASTIC_PASSWORD:}
+
+  jwt:
+    token:
+      secret-key: ${JWT_SECRET_KEY:swa-proj1-jwt-secret}

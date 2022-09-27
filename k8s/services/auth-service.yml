@@ -28,35 +28,38 @@ spec:
       containers:
         - name: auth-app
           image: proj3_auth-service
+          imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8070
           env:
             - name: SPRING_PROFILES_ACTIVE
               value: prod
+
+            # Database: MySQL
             - name: MYSQL_URL
               valueFrom:
                 configMapKeyRef:
-                  name: database-configs
-                  key: auth_mysqlURL
-
+                  name: core-configs
+                  key: mysql_url
             - name: MYSQL_DB_NAME
               valueFrom:
                 configMapKeyRef:
-                  name: database-configs
-                  key: auth_dbName
-            - name: JWT_SECRET_KEY
-              valueFrom:
-                secretKeyRef:
-                  name: app-secret
-                  key: jwt-secret-key
+                  name: core-configs
+                  key: mysql_authDBName
             - name: MYSQL_USERNAME
               valueFrom:
                 secretKeyRef:
-                  name: database-secret
+                  name: core-secrets
                   key: mysql_user
             - name: MYSQL_PASSWORD
               valueFrom:
                 secretKeyRef:
-                  name: database-secret
+                  name: core-secrets
                   key: mysql_pass
-          imagePullPolicy: Never
+
+            # App Specific
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: core-secrets
+                  key: jwt-secret-key

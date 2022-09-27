@@ -32,10 +32,13 @@ spec:
           ports:
             - containerPort: 8087
           env:
+            # PROFILE
             - name: SPRING_PROFILES_ACTIVE
               value: prod
+
+            # App Specific
             - name: JWT_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: app-secret
+                  name: core-secrets
                   key: jwt-secret-key

@@ -1,36 +1,38 @@
+# Service
 apiVersion: v1
 kind: Service
 metadata:
-  name: candidate-service
+  name: recruiter-service
 spec:
   selector:
-    app: candidate-service
+    app: recruiter-app
   ports:
     - port: 80
-      nodePort: 30082
-      targetPort: 8082
+      nodePort: 30084 # expose to local
+      targetPort: 8084
   type: NodePort
 ---
+# Deployment
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: candidate-service
+  name: recruiter-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: candidate-service
+      app: recruiter-app
   template:
     metadata:
       labels:
-        app: candidate-service
+        app: recruiter-app
     spec:
       containers:
-        - name: candidate-service
-          image: proj3_candidate-service
+        - name: recruiter-app
+          image: proj3_recruiter-service
           imagePullPolicy: IfNotPresent
           ports:
-            - containerPort: 8082
+            - containerPort: 8084
           env:
             # PROFILE
             - name: SPRING_PROFILES_ACTIVE
@@ -63,4 +65,3 @@ spec:
                 secretKeyRef:
                   name: core-secrets
                   key: jwt-secret-key
-
