@@ -14,8 +14,8 @@ public class CandidateController {
     @Autowired
     CandidateService candidateService;
 
-    @PostMapping("/register-candidate")
-    public ResponseEntity<?> register(@RequestBody CandidateDTO candidateDTO) {
+    @PostMapping("/create-candidate-profile")
+    public ResponseEntity<?> createCandidateProfile(@RequestBody CandidateDTO candidateDTO) {
         return new ResponseEntity<>(candidateService.registerCandidate(candidateDTO), HttpStatus.OK);
     }
 

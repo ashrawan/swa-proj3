@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
@@ -32,7 +33,8 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Override
     public CandidateDTO findById(String id) {
-        Candidate candidate = candidateRepository.findById(id).get();
+        Optional<Candidate> candidateOpt = candidateRepository.findById(id);
+        Candidate candidate = candidateOpt.orElseThrow();
         if (candidate == null) {
             log.error("Candidate with id {} Not Found!!!",id);
             throw new RuntimeException("Candidate Not Found!!");
@@ -57,9 +59,9 @@ public class CandidateServiceImpl implements CandidateService {
                 .map(candidate -> {
                     CandidateDTO candidateDTO = new CandidateDTO();
                     candidateDTO.setCandidateID(candidate.getCandidateID());
-                    candidateDTO.setFullName(candidateDTO.getFullName());
+                    candidateDTO.setFullName(candidate.getFullName());
                     candidateDTO.setSummary(candidate.getSummary());
-                    candidateDTO.setAddress(candidateDTO.getAddress());
+                    candidateDTO.setAddress(candidate.getAddress());
                     candidateDTO.setSkillDesc(candidate.getSkillDesc());
                     return candidateDTO;
                 }).collect(Collectors.toList());
