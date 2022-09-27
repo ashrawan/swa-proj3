@@ -94,8 +94,10 @@ class RecruiterServiceImplTest {
         RecruiterDto dto = mapper.recruiterToRecruiterDto(recruiterToSave);
         Recruiter test = mapper.recruiterDtoToRecruiter(dto);
 
+//        RecruiterDto savedRec = recruiterService.createRecruiter(dto);
         Recruiter savedRecruiter = recruiterRepository.save(test);
 
+//        assertNotNull(savedRec);
         assertNotNull(savedRecruiter);
     }
 

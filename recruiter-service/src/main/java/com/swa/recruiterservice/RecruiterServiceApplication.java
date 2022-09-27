@@ -24,7 +24,7 @@ public class RecruiterServiceApplication {
     CommandLineRunner commandLineRunner(KafkaTemplate<String, String> kafkaTemplate){
         return args -> {
             for (int i = 0; i < 100; i++) {
-                kafkaTemplate.send(kafkatopic, "hello Kafka " + i);
+//                kafkaTemplate.send(kafkatopic, "hello Kafka " + i);
 //                kafkaTemplate.send("javaTopic", 1, "key", "hello Kafka " +  "test " + i);
             }
         };
