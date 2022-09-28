@@ -3,20 +3,20 @@ version: '3.9'
 services:
 
   # =============== MySQL =================
-  swa3-mysqldb:
-    container_name: swa3-mysqldb-container
-    image: mysql:latest
-    ports:
-      - 3307:3307
-    environment:
-      MYSQL_ROOT_PASSWORD: root
-    healthcheck:
-      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
-      timeout: 50s
-      retries: 3
-    restart: on-failure
-    volumes:
-      - swa2_mysqldb:/var/lib/mysql
+#  swa3-mysqldb:
+#    container_name: swa3-mysqldb-container
+#    image: mysql:latest
+#    ports:
+#      - 3307:3307
+#    environment:
+#      MYSQL_ROOT_PASSWORD: root
+#    healthcheck:
+#      test: [ "CMD", "mysqladmin" ,"ping", "-h", "localhost" ]
+#      timeout: 50s
+#      retries: 3
+#    restart: on-failure
+#    volumes:
+#      - swa2_mysqldb:/var/lib/mysql
 
   # Add as Required: =============== MongoDB, Cassandra, ElasticSearch =================
   # swa3-mongodb
@@ -123,5 +123,32 @@ services:
   #        condition: service_healthy
 
 
-volumes:
-  swa2_mysqldb:
+#volumes:
+#  swa2_mysqldb:
+
+
+  application-service:
+    container_name: proj3_application-container
+    image: proj3_application-service
+    ports:
+      - 8085:8085
+    restart: always
+    build:
+      context: ./application-service
+      dockerfile: Dockerfile
+    environment:
+      SPRING_DATASOURCE_URL: mongodb://localhost:27017/application-db
+      SPRING_DATASOURCE_USER: root
+      SPRING_DATASOURCE_PASSWORD: root
+      MONGODB_PORT: 27017
+    depends_on:
+      - monodb-service
+
+  monodb-service:
+    image: mongo
+    environment:
+      - MONGO_INITDB_ROOT_USERNAME=root
+      - MONGO_INITDB_ROOT_PASSWORD=root
+
+
+

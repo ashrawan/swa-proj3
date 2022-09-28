@@ -5,6 +5,7 @@ import com.swa.application.dto.ApplicationDto;
 import com.swa.application.dto.mapper.ApplicationMapper;
 import com.swa.application.model.Application;
 import com.swa.application.repository.ApplicationRepository;
+import com.swa.application.response.ServerResponse;
 import com.swa.application.service.ApplicationService;
 import com.swa.proj3commonmodule.dto.JobRequest;
 import lombok.extern.slf4j.Slf4j;
@@ -36,24 +37,25 @@ public class ApplicationServiceImpl implements ApplicationService {
     private KafkaTemplate<String, JobRequest> kafkaTemplate;
 
     @Override
-    public ResponseEntity<?> save(ApplicationDto applicationDto) {
+    public ServerResponse save(ApplicationDto applicationDto) {
         log.info("------------ Applying application");
-        String message = null;
+
         Optional<Application> applicationOpt = applicationRepository.findByCandidateIdAndJobId(applicationDto.getCandidateId(), applicationDto.getJobId());
         if(!applicationOpt.isPresent())
             return persistApplication(applicationDto);
-        else
-            message = modifyApplication(applicationOpt);
+        return modifyApplication(applicationOpt.get());
 
-        return new ResponseEntity<>(message, HttpStatus.CREATED);
     }
 
-    private ResponseEntity<String> persistApplication(ApplicationDto applicationDto) {
+    private ServerResponse persistApplication(ApplicationDto applicationDto) {
         sendJob(applicationDto.getCandidateId(), applicationDto.getJobId());
         Application application = mapper.mapToApplication(applicationDto);
         mapper.mapToDto(applicationRepository.save(application));
-        String message = "Checking job... Please try later.";
-        return new ResponseEntity<>(message, HttpStatus.OK);
+
+        return ServerResponse.builder()
+                .statusCode(HttpStatus.CREATED.value())
+                .message("Checking job... Please try later.")
+                .build();
     }
 
     @NewSpan("send-job-request")
@@ -64,17 +66,19 @@ public class ApplicationServiceImpl implements ApplicationService {
         kafkaTemplate.send(applicationTopic, jobRequest);
     }
 
-    private String modifyApplication(Optional<Application> applicationOpt) {
+    private ServerResponse modifyApplication(Application application) {
         String message;
-        if(applicationOpt.get().getStatus())
+        if(application.getStatus())
             message = "You have already applied in this job.";
         else {
-            Application application = applicationOpt.get();
             application.setStatus(true);
             applicationRepository.save(application);
             message = "Job has been applied.";
         }
-        return message;
+        return ServerResponse.builder()
+                .statusCode(HttpStatus.OK.value())
+                .message(message)
+                .build();
     }
 
     @Override
@@ -89,8 +93,8 @@ public class ApplicationServiceImpl implements ApplicationService {
     }
 
     @Override
-    public ApplicationDto findById(Integer id) {
-        Optional<Application> applicationOpt = applicationRepository.findById("id");
+    public ApplicationDto findById(String id) {
+        Optional<Application> applicationOpt = applicationRepository.findById(id);
         if(!applicationOpt.isPresent()){
             System.out.println("Application not found!");
             return null;

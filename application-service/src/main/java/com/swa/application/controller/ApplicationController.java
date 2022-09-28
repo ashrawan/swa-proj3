@@ -1,13 +1,14 @@
 package com.swa.application.controller;
 
 import com.swa.application.dto.ApplicationDto;
-import com.swa.application.model.Application;
 import com.swa.application.repository.ApplicationRepository;
+import com.swa.application.response.ServerResponse;
 import com.swa.application.service.ApplicationService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.util.StringUtils;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -28,8 +29,8 @@ public class ApplicationController {
     }
 
     @PostMapping
-    public ResponseEntity<?> save(@RequestBody ApplicationDto applicationDto){
-       return applicationService.save(applicationDto);
+    public ResponseEntity<ServerResponse> save(@RequestBody ApplicationDto applicationDto){
+        return new ResponseEntity<>(applicationService.save(applicationDto), HttpStatus.OK);
     }
 
     @GetMapping
@@ -39,9 +40,8 @@ public class ApplicationController {
     }
 
     @GetMapping("{id}")
-    public ResponseEntity<ApplicationDto> findById(@PathVariable Integer id){
-        ApplicationDto applicationDto = applicationService.findById(id);
-        return new ResponseEntity<>(applicationDto, HttpStatus.OK);
+    public ResponseEntity<ApplicationDto> findById(@PathVariable String id){
+        return new ResponseEntity<>(applicationService.findById(id), HttpStatus.OK);
     }
 
     @PutMapping
