@@ -7,9 +7,9 @@ spec:
     app: job-service
   ports:
     - port: 80
-      nodePort: 30084
+#      nodePort: 30084
       targetPort: 8084
-  type: NodePort
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment

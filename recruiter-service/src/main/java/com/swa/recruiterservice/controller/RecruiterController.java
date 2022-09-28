@@ -16,15 +16,14 @@ public class RecruiterController {
 
 
     private final RecruiterService recruiterService;
-    private final KafkaTemplate<String, String> kafkaTemplate;
+//    private final KafkaTemplate<String, String> kafkaTemplate;
 
-    @Value("${kafka.topic}")
-    private String kafkatopic;
+//    @Value("${kafka.topic}")
+//    private String kafkatopic;
 
 
-    public RecruiterController(RecruiterService recruiterService, KafkaTemplate<String, String> kafkaTemplate) {
+    public RecruiterController(RecruiterService recruiterService) {
         this.recruiterService = recruiterService;
-        this.kafkaTemplate = kafkaTemplate;
     }
 
     @GetMapping("/all")
@@ -35,13 +34,13 @@ public class RecruiterController {
     }
 
     //Testing kakfa
-    @GetMapping("/test")
-    @ResponseStatus(HttpStatus.OK)
-    public void test(){
-        log.debug("testing kafka");
-
-        kafkaTemplate.send(kafkatopic, recruiterService.findAllRecruiters().stream().findFirst().toString());
-    }
+//    @GetMapping("/test")
+//    @ResponseStatus(HttpStatus.OK)
+//    public void test(){
+//        log.debug("testing kafka");
+//
+//        kafkaTemplate.send(kafkatopic, recruiterService.findAllRecruiters().stream().findFirst().toString());
+//    }
 
     @GetMapping("/companies")
     public ResponseEntity<?> listCompanies(){
