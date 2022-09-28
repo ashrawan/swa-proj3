@@ -1,13 +1,13 @@
-
 ## Add bitnami repo
+
 ```cmd
 helm repo add bitnami https://charts.bitnami.com/bitnami
 ```
 
-
 ### # Kafka (Zookeeper + Kafka)
 
 1. Install Zookeeper first
+
 ```cmd
 helm install zookeeper bitnami/zookeeper \
   --set replicaCount=1 \
@@ -43,6 +43,7 @@ kubectl --namespace default exec -it $POD_NAME -- kafka-topics.sh --create --zoo
 ```
 
 ### # Install Mongo
+
 ```cmd
 helm install mongo \
 --set auth.rootPassword=mongo \
@@ -52,7 +53,18 @@ helm install mongo \
 bitnami/mongodb
 ```
 
+### # Install MySQL
+
+```cmd
+helm install swa-mysql \
+  --set auth.rootPassword=root \
+  --set metrics.livenessProbe.initialDelaySeconds=300 \
+  --set auth.database=test-db \
+bitnami/mysql
+```
+
 ### # Install Redis
+
 ```cmd
 helm install redis \
   --set auth.password=redis \
@@ -72,7 +84,14 @@ helm install elasticsearch \
  bitnami/elasticsearch
 ```
 
+### # Install Prometheus and Grafana
 
-### # Install Zipkin
+```cmd
+helm install kube-prometheus \
+bitnami/kube-prometheus
+```
 
-TODO
+```cmd
+helm install grafana \
+bitnami/grafana
+```
