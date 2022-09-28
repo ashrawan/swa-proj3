@@ -17,7 +17,7 @@ public class CandidateController {
     CandidateService candidateService;
 
     @PostMapping("/create-candidate-profile")
-    @CircuitBreaker(name = "defaultsForCandidateServiceApp", fallbackMethod = "candidateServiceFallback")
+//    @CircuitBreaker(name = "defaultsForCandidateServiceApp", fallbackMethod = "candidateServiceFallback")
     public ResponseEntity<?> createCandidateProfile(@RequestBody CandidateDTO candidateDTO) {
         return new ResponseEntity<>(candidateService.registerCandidate(candidateDTO), HttpStatus.OK);
     }
@@ -28,7 +28,7 @@ public class CandidateController {
     }
 
     @GetMapping("/all")
-    @Retry(name = "retryForCandidates", fallbackMethod = "candidateServiceFallback")
+//    @Retry(name = "retryForCandidates", fallbackMethod = "candidateServiceFallback")
     public ResponseEntity<?> getAllCandidate() {
         return new ResponseEntity<>(candidateService.findAll(), HttpStatus.OK);
     }

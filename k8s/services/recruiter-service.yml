@@ -46,8 +46,9 @@ spec:
                   key: mongo_url
             - name: MONGO_DATABASE
               valueFrom:
-                name: core-configs
-                key: mongo_candidateDBName
+                configMapKeyRef:
+                  name: core-configs
+                  key: mongo_candidateDBName
             - name: MONGO_USERNAME
               valueFrom:
                 secretKeyRef:

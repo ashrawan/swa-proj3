@@ -35,7 +35,6 @@ spec:
             # PROFILE
             - name: SPRING_PROFILES_ACTIVE
               value: prod
-
             # Database: MongoDB
             - name: MONGO_URL
               valueFrom:
@@ -44,8 +43,9 @@ spec:
                   key: mongo_url
             - name: MONGO_DATABASE
               valueFrom:
-                name: core-configs
-                key: mongo_candidateDBName
+                configMapKeyRef:
+                  name: core-configs
+                  key: mongo_candidateDBName
             - name: MONGO_USERNAME
               valueFrom:
                 secretKeyRef:
@@ -56,7 +56,6 @@ spec:
                 secretKeyRef:
                   name: core-secrets
                   key: mongo_pass
-
             # App Specific
             - name: JWT_SECRET_KEY
               valueFrom:

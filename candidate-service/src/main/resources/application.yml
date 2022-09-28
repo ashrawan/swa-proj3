@@ -5,24 +5,24 @@ server:
 spring:
   kafka:
     producer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
 
     #   Custom defined values
     custom:
-      candidate-topic: candidate-events
-      notification-topic: notification-events
+      candidate-topic: ${KAFKA_CANDIDATE_TOPIC:candidate-events}
+      notification-topic: ${KAFKA_NOTIFICATION_TOPIC:notification-events}
 
   # Service Name
   application:
-    name: candidate-service
+    name: ${APPLICATION_NAME:candidate-service}
 
   # Mongo DB Config
   data:
     mongodb:
-      uri: mongodb://${MONGO_URL:localhost}:${MONGO_PORT:27017}/${MONGO_DATABASE:candidate-db}
-      authentication-database: admin
-#      username: ${MONGO_USERNAME:root}
-#      password: ${MONGO_PASSWORD:pswd}
+#      uri: mongodb://${MONGO_URL:localhost}:${MONGO_PORT:27017}/${MONGO_DATABASE:candidate-db}
+        #      authentication-database: admin
+      username: ${MONGO_USERNAME:mongo}
+      password: ${MONGO_PASSWORD:mongo}
       database: ${MONGO_DATABASE:candidate-db}
       port: 27017
       host: localhost
@@ -33,7 +33,8 @@ spring:
     sampler:
       percentage: 1 # 1 Indicate Sleuth send 100 percent log to the zipkin (by default for performance issue spring sleuth send 10 percent log to zipkin in enterprise)
   zipkin:
-    baseUrl: http://localhost:9411/
+    enabled: {ZIPKIN_ENABLED:false}
+    baseUrl: ${ZIPKIN_URL:http://localhost:9411/}
 
 app:
   jwt:
