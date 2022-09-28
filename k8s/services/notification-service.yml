@@ -7,9 +7,9 @@ spec:
     app: notification-service
   ports:
     - port: 80
-      nodePort: 30087
+#      nodePort: 30087
       targetPort: 8087
-  type: NodePort
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment

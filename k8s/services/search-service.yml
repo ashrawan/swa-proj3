@@ -4,12 +4,12 @@ metadata:
   name: search-service
 spec:
   selector:
-    app: search-app
+    app: search-service
   ports:
     - port: 80
-      nodePort: 30081 # exposing to local, to access this service
+#      nodePort: 30081 # exposing to local, to access this service
       targetPort: 8081
-  type: NodePort
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -19,14 +19,14 @@ spec:
   replicas: 1
   selector:
     matchLabels:
-      app: search-app
+      app: search-service
   template:
     metadata:
       labels:
-        app: search-app
+        app: search-service
     spec:
       containers:
-        - name: search-app
+        - name: search-service
           image: ashrawan/proj3_search-service
           imagePullPolicy: Always
           ports:
@@ -108,5 +108,5 @@ spec:
             - name: JWT_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: app-secret
+                  name: core-secrets
                   key: jwt-secret-key

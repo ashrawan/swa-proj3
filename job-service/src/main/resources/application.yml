@@ -1,16 +1,18 @@
 server:
-  port: 8083
+  port: ${SERVER_PORT:8083}
 
 
 spring:
   kafka:
     producer:
       bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP_ID:services-group}
 
     #   Custom defined values
     custom:
       candidate-topic: ${KAFKA_CANDIDATE_TOPIC:candidate-events}
-      application_topic: ${KAFKA_APPLICATION_TOPIC:application-events}
+      application-topic: ${KAFKA_APPLICATION_TOPIC:application-events}
       job_topic: ${KAFKA_JOB_TOPIC:job-events}
 
   application:
