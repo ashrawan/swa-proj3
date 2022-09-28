@@ -1,7 +1,6 @@
 server:
   port: 8084
 
-
 spring:
   kafka:
     producer:
@@ -12,8 +11,7 @@ spring:
     #   Custom defined values
 #    topic: recruiter-events
     custom:
-      candidate-topic: ${KAFKA_CANDIDATE_TOPIC:candidate-events}
-      notification-topic: ${KAFKA_NOTIFICATION_TOPIC:notification-events}
+      recruiter-topic: ${KAFKA_RECRUITER_TOPIC:recruiter-events}
 
   # Service Name
   application:
@@ -29,6 +27,7 @@ spring:
       database: ${MONGO_DATABASE:recruiter-db}
       port: 27017
       host: ${MONGO_URL:localhost}
+#      uri: ${MONGO_URL:mongodb://localhost:${MONGO_PORT:27017}/${MONGO_DATABASE:recruiter-db}}
       auto-index-creation: true
 
   # Sleuth and Zipkin Config (Used for distributed tracing and logs)
