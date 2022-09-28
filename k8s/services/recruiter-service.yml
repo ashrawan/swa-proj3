@@ -30,7 +30,7 @@ spec:
       containers:
         - name: recruiter-app
           image: ashrawan/proj3_recruiter-service
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 8084
           env:

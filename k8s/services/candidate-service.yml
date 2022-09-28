@@ -28,7 +28,7 @@ spec:
       containers:
         - name: candidate-service
           image: ashrawan/proj3_candidate-service
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 8082
           env:

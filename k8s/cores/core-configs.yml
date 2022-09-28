@@ -4,29 +4,30 @@ metadata:
   name: core-configs
 data:
   # Broker: Kafka
-  kafka_BootStrapServers: 'kafka-0.kafka-headless.default.svc.cluster.local:9092'
+  kafka_BootStrapServers: kafka-0.kafka-headless.default.svc.cluster.local:9092
   kafka_searchServiceGroupId: services-group
   kafka_jobTopic: job-events
   kafka_candidateTopic: candidate-events
+  kafka_applicationTopic: application-events
 
   # Caching: Redis
-  redis_host: 'redis-master.default.svc.cluster.local'
-  redis_port: '6379'
+  redis_host: redis-master.default.svc.cluster.local
+  redis_port: 6379
 
   # Tracing: Zipkin
-  zipkin_url: 'http://swa3-zipkin' # 9411
+  zipkin_url: http://swa3-zipkin # 9411
 
   # === Database ====
   # Elastic Search
-  elastic_host: swa3-elastic
-  elastic_port: '9200'
+  elastic_host: elasticsearch.default.svc.cluster.local
+  elastic_port: 9200
 
   # MySQL
   mysql_url: swa-mysql.default.svc.cluster.local
   mysql_authDBName: auth-db
 
   # MySQL
-  mongo_url: 'mongo-mongodb.default.svc.cluster.local'
+  mongo_url: mongo-mongodb.default.svc.cluster.local
   mongo_candidateDBName: candidate-db
   mongo_recruiterDBName: recruiter-db
 

@@ -1,36 +1,36 @@
 apiVersion: v1
 kind: Service
 metadata:
-  name: search-service
+  name: job-service
 spec:
   selector:
-    app: search-app
+    app: job-service
   ports:
     - port: 80
-      nodePort: 30081 # exposing to local, to access this service
-      targetPort: 8081
+      nodePort: 30084
+      targetPort: 8084
   type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
 metadata:
-  name: search-service
+  name: job-service
 spec:
   replicas: 1
   selector:
     matchLabels:
-      app: search-app
+      app: job-service
   template:
     metadata:
       labels:
-        app: search-app
+        app: job-service
     spec:
       containers:
-        - name: search-app
-          image: ashrawan/proj3_search-service
+        - name: candidate-service
+          image: ashrawan/proj3_job-service
           imagePullPolicy: Always
           ports:
-            - containerPort: 8081
+            - containerPort: 8084
           env:
             # PROFILE
             - name: SPRING_PROFILES_ACTIVE
@@ -57,56 +57,37 @@ spec:
                 configMapKeyRef:
                   name: core-configs
                   key: kafka_candidateTopic
+            - name: KAFKA_APPLICATION_TOPIC
+                valueFrom:
+                  configMapKeyRef:
+                    name: core-configs
+                    key: kafka_applicationTopic
 
-            # Caching: Redis
-            - name: REDIS_HOST
+            # Database: MongoDB
+            - name: MONGO_URL
               valueFrom:
                 configMapKeyRef:
                   name: core-configs
-                  key: redis_host
-            - name: REDIS_PORT
+                  key: mongo_url
+            - name: MONGO_DATABASE
               valueFrom:
                 configMapKeyRef:
                   name: core-configs
-                  key: redis_port
-            - name: REDIS_PASSWORD
+                  key: mongo_candidateDBName
+            - name: MONGO_USERNAME
               valueFrom:
                 secretKeyRef:
                   name: core-secrets
-                  key: redis_password
-
-            # Tracing: Zipkin & Sleuth
-            - name: ZIPKIN_URL
-              valueFrom:
-                configMapKeyRef:
-                  name: core-configs
-                  key: zipkin_url
-
-            # Database: Elastic Search
-            - name: ELASTIC_HOST
-              valueFrom:
-                configMapKeyRef:
-                  name: core-configs
-                  key: elastic_host
-            - name: ELASTIC_PORT
-              valueFrom:
-                configMapKeyRef:
-                  name: core-configs
-                  key: elastic_port
-            - name: ELASTIC_USERNAME
+                  key: mongo_user
+            - name: MONGO_PASSWORD
               valueFrom:
                 secretKeyRef:
                   name: core-secrets
-                  key: elastic_username
-            - name: ELASTIC_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: core-secrets
-                  key: elastic_password
-
+                  key: mongo_pass
             # App Specific
             - name: JWT_SECRET_KEY
               valueFrom:
                 secretKeyRef:
-                  name: app-secret
+                  name: core-secrets
                   key: jwt-secret-key
+

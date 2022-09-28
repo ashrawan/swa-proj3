@@ -5,23 +5,35 @@ server:
 spring:
   application:
     name: application-service
-  zipkin:
-    base-url: http://127.0.0.1:9411/
 
   kafka:
-    bootstrap-servers: 127.0.0.1:9092
-    application_topic: application_topic
-    job_topic: job_topic
+    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    application_topic: ${KAFKA_APPLICATION_TOPIC:application-events}
+    job_topic: ${KAFKA_JOB_TOPIC:job-events}
 
   data:
     mongodb:
-      uri: mongodb://localhost:27017/${MYSQL_DB_NAME:application-db}
+#      uri: mongodb://localhost:27017/${MYSQL_DB_NAME:application-db}
       #      authentication-database: admin
-#      username: ${MONGODB_USERNAME:root}
-#      password: ${MONGODB_PASSWORD:root}
-      database: ${MONGODB_DB_NAME:application-db}
+      username: ${MONGO_USERNAME:mongo}
+      password: ${MONGO_PASSWORD:mongo}
+      database: ${MONGO_DATABASE:application-db}
       port: 27017
-      host: localhost
+      host: ${MONGO_URL:localhost}
+      auto-index-creation: true
+
+  # Sleuth and Zipkin Config (Used for distributed tracing and logs)
+  sleuth:
+    sampler:
+      percentage: 1 # 1 Indicate Sleuth send 100 percent log to the zipkin (by default for performance issue spring sleuth send 10 percent log to zipkin in enterprise)
+  zipkin:
+    enabled: ${ZIPKIN_ENABLED:false}
+    baseUrl: ${ZIPKIN_URL:http://localhost:9411/}
+
+app:
+  jwt:
+    token:
+      secret-key: ${JWT_SECRET_KEY:swa-proj1-jwt-secret}
 
 #  data:
 #    mongodb:

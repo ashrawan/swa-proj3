@@ -28,7 +28,7 @@ spec:
       containers:
         - name: auth-app
           image: ashrawan/proj3_auth-service
-          imagePullPolicy: IfNotPresent
+          imagePullPolicy: Always
           ports:
             - containerPort: 8070
           env:

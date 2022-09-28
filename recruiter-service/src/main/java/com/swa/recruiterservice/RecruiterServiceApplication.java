@@ -23,10 +23,8 @@ public class RecruiterServiceApplication {
     @Bean
     CommandLineRunner commandLineRunner(KafkaTemplate<String, String> kafkaTemplate){
         return args -> {
-            for (int i = 0; i < 100; i++) {
-//                kafkaTemplate.send(kafkatopic, "hello Kafka " + i);
-//                kafkaTemplate.send("javaTopic", 1, "key", "hello Kafka " +  "test " + i);
-            }
+                kafkaTemplate.send(kafkatopic, "hello Kafka from recruiter events ");
+//                kafkaTemplate.send(kafkatopic, 1, "key", "hello Kafka " +  "hello Kafka from recruiter events " );
         };
     }
 

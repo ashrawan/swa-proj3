@@ -15,8 +15,11 @@ public class KafkaTopicConfig {
     @Value("${kafka.partitions}")
     private int partitions;
 
+    @Value("${kafka.replication-factor}")
+    private int replicationFactor;
+
     @Bean
     public NewTopic javaTestTopic(){
-        return TopicBuilder.name(kafkatopic).partitions(partitions).build();
+        return TopicBuilder.name(kafkatopic).replicas(replicationFactor).partitions(partitions).build();
     }
 }

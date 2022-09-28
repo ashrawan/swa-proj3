@@ -1,4 +1,3 @@
-
 server:
   port: 8083
 
@@ -6,25 +5,24 @@ server:
 spring:
   kafka:
     producer:
-      bootstrap-servers: localhost:9092
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
 
     #   Custom defined values
     custom:
-      candidate-topic: job-events
-      application_topic: application_topic
-      job_topic: job_topic
+      candidate-topic: ${KAFKA_CANDIDATE_TOPIC:candidate-events}
+      application_topic: ${KAFKA_APPLICATION_TOPIC:application-events}
+      job_topic: ${KAFKA_JOB_TOPIC:job-events}
 
   application:
-    name: job-service
+    name: ${APPLICATION_NAME:job-service}
   data:
     mongodb:
-      uri: mongodb://localhost:27017/${MONGODB_NAME:job-db}
-      #      authentication-database: admin
-      username: ${MONGODB_USERNAME:root}
-      password: ${MONGODB_PASSWORD:root}
-      database: ${MONGODB_DB_NAME:job-db}
+      username: ${MONGO_USERNAME:mongo}
+      password: ${MONGO_PASSWORD:mongo}
+      database: ${MONGO_DATABASE:job-db}
       port: 27017
-      host: localhost
+      host: ${MONGO_URL:localhost}
+      auto-index-creation: true
 
 app:
   jwt:
