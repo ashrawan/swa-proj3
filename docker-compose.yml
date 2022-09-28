@@ -5,7 +5,7 @@ services:
   # =============== MySQL =================
   #  swa3-mysqldb:
   #    container_name: swa3-mysqldb-container
-  #    image: mysql:latest
+  #    image: ashrawan/mysql:latest
   #    ports:
   #      - 3307:3307
   #    environment:
@@ -27,7 +27,7 @@ services:
   # =============== Services =================
   auth-service:
     container_name: proj3_auth-container
-    image: proj3_auth-service
+    image: ashrawan/proj3_auth-service
     ports:
       - 8070:8070
     restart: always
@@ -43,7 +43,7 @@ services:
 
   search-service:
     container_name: proj3_search-container
-    image: proj3_search-service
+    image: ashrawan/proj3_search-service
     ports:
       - 8081:8081
     restart: always
@@ -59,7 +59,7 @@ services:
 
   candidate-service:
     container_name: proj3_candidate-container
-    image: proj3_candidate-service
+    image: ashrawan/proj3_candidate-service
     ports:
       - 8082:8082
     restart: always
@@ -75,7 +75,7 @@ services:
 
   job-service:
     container_name: proj3_job-container
-    image: proj3_job-service
+    image: ashrawan/proj3_job-service
     ports:
       - 8083:8083
     restart: always
@@ -92,7 +92,7 @@ services:
 
   recruiter-service:
     container_name: proj3_recruiter-container
-    image: proj3_recruiter-service
+    image: ashrawan/proj3_recruiter-service
     ports:
       - 8084:8084
     restart: always
@@ -108,7 +108,7 @@ services:
 
   notification-service:
     container_name: proj3_notification-container
-    image: proj3_notification-service
+    image: ashrawan/proj3_notification-service
     ports:
       - 8087:8087
     restart: always
@@ -129,7 +129,7 @@ services:
 #
 #  application-service:
 #    container_name: proj3_application-container
-#    image: proj3_application-service
+#    image: ashrawan/proj3_application-service
 #    ports:
 #      - 8085:8085
 #    restart: always
@@ -145,7 +145,7 @@ services:
 #      - monodb-service
 #
 #  monodb-service:
-#    image: mongo
+#    image: ashrawan/mongo
 #    environment:
 #      - MONGO_INITDB_ROOT_USERNAME=root
 #      - MONGO_INITDB_ROOT_PASSWORD=root

@@ -10,7 +10,7 @@ data:
   kafka_candidateTopic: candidate-events
 
   # Caching: Redis
-  redis_host: redisHost
+  redis_host: 'redis-master.default.svc.cluster.local'
   redis_port: '6379'
 
   # Tracing: Zipkin
@@ -22,7 +22,7 @@ data:
   elastic_port: '9200'
 
   # MySQL
-  mysql_url: 'swa-mysql.default.svc.cluster.local'
+  mysql_url: swa-mysql.default.svc.cluster.local
   mysql_authDBName: auth-db
 
   # MySQL

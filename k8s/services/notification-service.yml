@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: notification-service
-          image: proj3_notification-service
+          image: ashrawan/proj3_notification-service
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8087

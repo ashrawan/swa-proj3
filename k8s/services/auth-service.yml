@@ -7,9 +7,9 @@ spec:
     app: auth-app
   ports:
     - port: 80
-      nodePort: 30070 # exposing to local, to access this service
+#      nodePort: 30070 # exposing to local, to access this service
       targetPort: 8070
-  type: NodePort
+  type: LoadBalancer
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: auth-app
-          image: proj3_auth-service
+          image: ashrawan/proj3_auth-service
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8070
@@ -47,15 +47,9 @@ spec:
                   name: core-configs
                   key: mysql_authDBName
             - name: MYSQL_USERNAME
-              valueFrom:
-                secretKeyRef:
-                  name: core-secrets
-                  key: mysql_user
+              value: root
             - name: MYSQL_PASSWORD
-              valueFrom:
-                secretKeyRef:
-                  name: core-secrets
-                  key: mysql_pass
+              value: root
 
             # App Specific
             - name: JWT_SECRET_KEY

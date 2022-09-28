@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: search-app
-          image: proj3_search-service
+          image: ashrawan/proj3_search-service
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8081

@@ -27,7 +27,7 @@ spec:
     spec:
       containers:
         - name: candidate-service
-          image: proj3_candidate-service
+          image: ashrawan/proj3_candidate-service
           imagePullPolicy: IfNotPresent
           ports:
             - containerPort: 8082
@@ -35,6 +35,29 @@ spec:
             # PROFILE
             - name: SPRING_PROFILES_ACTIVE
               value: prod
+
+            # Broker: Kafka
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: kafka_BootStrapServers
+            - name: KAFKA_CONSUMER_GROUP_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: kafka_searchServiceGroupId
+            - name: KAFKA_JOB_TOPIC
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: kafka_jobTopic
+            - name: KAFKA_CANDIDATE_TOPIC
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: kafka_candidateTopic
+
             # Database: MongoDB
             - name: MONGO_URL
               valueFrom:
