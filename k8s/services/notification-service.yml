@@ -35,6 +35,10 @@ spec:
             # PROFILE
             - name: SPRING_PROFILES_ACTIVE
               value: prod
+            - name: MAIL_USERNAME
+              value: sanjayakoju42@gmail.com
+            - name: MAIL_PASSWORD
+              value: fxahxqzfghwliack
 
             # App Specific
             - name: JWT_SECRET_KEY
