@@ -6,25 +6,27 @@ import com.swa.searchservice.entity.CandidateTable;
 import com.swa.searchservice.helper.mapper.CandidateMapper;
 import com.swa.searchservice.repository.CandidateRepository;
 import com.swa.searchservice.service.CandidateService;
+import lombok.AllArgsConstructor;
+import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.cache.annotation.CachePut;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
+import org.springframework.util.StringUtils;
 
 import java.util.List;
 import java.util.UUID;
 
 @Service
 @Slf4j
+@RequiredArgsConstructor
 public class CandidateServiceImpl implements CandidateService {
 
-    @Autowired
-    private CandidateRepository candidateRepository;
+    private final CandidateRepository candidateRepository;
 
-    @Autowired
-    private CandidateMapper candidateMapper;
+    private final CandidateMapper candidateMapper;
 
 
     @Cacheable(value = "candidates", key = "'all'", condition = "#result.size() > 0")

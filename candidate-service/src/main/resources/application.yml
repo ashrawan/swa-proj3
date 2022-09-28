@@ -10,20 +10,54 @@ spring:
     #   Custom defined values
     custom:
       candidate-topic: candidate-events
+      notification-topic: notification-events
 
+  # Service Name
   application:
     name: candidate-service
+
+  # Mongo DB Config
   data:
     mongodb:
-      uri: mongodb://localhost:27017/${MYSQL_DB_NAME:candidate-db}
-#      authentication-database: admin
-      username: ${MONGODB_USERNAME:root}
-      password: ${MONGODB_PASSWORD:root}
-      database: ${MONGODB_DB_NAME:candidate-db}
+      uri: mongodb://${MONGO_URL:localhost}:${MONGO_PORT:27017}/${MONGO_DATABASE:candidate-db}
+      authentication-database: admin
+#      username: ${MONGO_USERNAME:root}
+#      password: ${MONGO_PASSWORD:pswd}
+      database: ${MONGO_DATABASE:candidate-db}
       port: 27017
       host: localhost
+      auto-index-creation: true
+
+  # Sleuth and Zipkin Config (Used for distributed tracing and logs)
+  sleuth:
+    sampler:
+      percentage: 1 # 1 Indicate Sleuth send 100 percent log to the zipkin (by default for performance issue spring sleuth send 10 percent log to zipkin in enterprise)
+  zipkin:
+    baseUrl: http://localhost:9411/
 
 app:
   jwt:
     token:
       secret-key: ${JWT_SECRET_KEY:swa-proj1-jwt-secret}
+
+# Circuit Breaker Config
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true # Default false
+    instances:
+      defaultsForCandidateServiceApp: # Instance name
+        minimumNumberOfCalls: 5 # By Default 50 calls
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30000
+        permitNumberOfCallsInHalfOpenState: 2
+
+  retry:
+    configs:
+      default:
+        registerHealthIndicator: true
+    instances:
+      retryForCandidates:
+        maxRetryAttempts: 3
+        waitDuration: 2000

@@ -1,0 +1,67 @@
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: recruiter-service
+spec:
+  selector:
+    app: recruiter-app
+  ports:
+    - port: 80
+      nodePort: 30084 # expose to local
+      targetPort: 8084
+  type: NodePort
+---
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recruiter-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recruiter-app
+  template:
+    metadata:
+      labels:
+        app: recruiter-app
+    spec:
+      containers:
+        - name: recruiter-app
+          image: proj3_recruiter-service
+          imagePullPolicy: IfNotPresent
+          ports:
+            - containerPort: 8084
+          env:
+            # PROFILE
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+
+            # Database: MongoDB
+            - name: MONGO_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: mongo_url
+            - name: MONGO_DATABASE
+              valueFrom:
+                name: core-configs
+                key: mongo_candidateDBName
+            - name: MONGO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: core-secrets
+                  key: mongo_user
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: core-secrets
+                  key: mongo_pass
+
+            # App Specific
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: core-secrets
+                  key: jwt-secret-key

@@ -5,20 +5,29 @@ import com.swa.candidateservice.repository.CandidateRepository;
 import com.swa.proj3commonmodule.dto.CandidateDTO;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Value;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 
 @Service
 @Slf4j
 public class CandidateServiceImpl implements CandidateService {
 
+    @Value("${spring.kafka.custom.candidate-topic}")
+    private String candidateTopic;
+
+    @Autowired
+    private KafkaTemplate<String, CandidateDTO> kafkaTemplate;
     @Autowired
     CandidateRepository candidateRepository;
 
     @Override
     public CandidateDTO registerCandidate(CandidateDTO candidateDTO) {
+        log.info("Candidate is Saving ...");
         Candidate candidate = Candidate.builder()
                 .address(candidateDTO.getAddress())
                 .fullName(candidateDTO.getFullName())
@@ -27,12 +36,15 @@ public class CandidateServiceImpl implements CandidateService {
                 .build();
         Candidate saveCandidate = candidateRepository.save(candidate);
         candidateDTO.setCandidateID(saveCandidate.getCandidateID());
+        kafkaTemplate.send(candidateTopic, candidateDTO);
+        log.info("Candidate Save Successfully");
         return candidateDTO;
     }
 
     @Override
     public CandidateDTO findById(String id) {
-        Candidate candidate = candidateRepository.findById(id).get();
+        Optional<Candidate> candidateOpt = candidateRepository.findById(id);
+        Candidate candidate = candidateOpt.orElseThrow();
         if (candidate == null) {
             log.error("Candidate with id {} Not Found!!!",id);
             throw new RuntimeException("Candidate Not Found!!");
@@ -44,6 +56,7 @@ public class CandidateServiceImpl implements CandidateService {
                 .skillDesc(candidate.getSkillDesc())
                 .address(candidate.getAddress())
                 .build();
+        log.info("Candidate Fetch Success with ID : ",id);
         return candidateDTO;
     }
 
@@ -51,18 +64,21 @@ public class CandidateServiceImpl implements CandidateService {
     public List<CandidateDTO> findAll() {
         List<Candidate> candidateList = candidateRepository.findAll();
         if (candidateList == null) {
+            log.info("Candidate is Empty");
             throw new RuntimeException("Candidates is Empty");
         }
         List<CandidateDTO> candidateDTOList = candidateList.stream()
                 .map(candidate -> {
                     CandidateDTO candidateDTO = new CandidateDTO();
                     candidateDTO.setCandidateID(candidate.getCandidateID());
-                    candidateDTO.setFullName(candidateDTO.getFullName());
+                    candidateDTO.setFullName(candidate.getFullName());
                     candidateDTO.setSummary(candidate.getSummary());
-                    candidateDTO.setAddress(candidateDTO.getAddress());
+                    candidateDTO.setAddress(candidate.getAddress());
                     candidateDTO.setSkillDesc(candidate.getSkillDesc());
                     return candidateDTO;
                 }).collect(Collectors.toList());
+        log.info("Candidate List Fetch Successfully");
         return candidateDTOList;
     }
+
 }

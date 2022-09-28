@@ -1,10 +1,10 @@
-version: '3.7'
+version: '3.9'
 services:
   mongodb_container:
     image: mongo:latest
-    environment:
-      MONGODB_USERNAME: root
-      MONGODB_PASSWORD: root
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: root
+#      MONGO_INITDB_ROOT_PASSWORD: pswd
     ports:
       - 27017:27017
     volumes:
