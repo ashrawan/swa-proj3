@@ -127,15 +127,15 @@ services:
   #  swa2_mysqldb:
 #
 #
-#  application-service:
-#    container_name: proj3_application-container
-#    image: ashrawan/proj3_application-service
-#    ports:
-#      - 8085:8085
-#    restart: always
-#    build:
-#      context: ./application-service
-#      dockerfile: Dockerfile
+  application-service:
+    container_name: proj3_application-container
+    image: ashrawan/proj3_application-service
+    ports:
+      - 8085:8085
+    restart: always
+    build:
+      context: ./application-service
+      dockerfile: Dockerfile
 #    environment:
 #      SPRING_DATASOURCE_URL: mongodb://localhost:27017/application-db
 #      SPRING_DATASOURCE_USER: root
