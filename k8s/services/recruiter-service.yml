@@ -3,6 +3,8 @@ apiVersion: v1
 kind: Service
 metadata:
   name: recruiter-service
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
 spec:
   selector:
     app: recruiter-app
@@ -10,7 +12,7 @@ spec:
     - port: 80
 #      nodePort: 30084 # expose to local
       targetPort: 8084
-  type: LoadBalancer
+  type: ClusterIP
 ---
 # Deployment
 apiVersion: apps/v1

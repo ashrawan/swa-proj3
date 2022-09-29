@@ -29,17 +29,23 @@ public class ExampleJobService {
 
 
 //    Disabling Kafka Producer For development, to enable uncomment @Bean
-    @Bean
-    public CommandLineRunner commandLineRunner() {
-        return args -> {
-            CandidateDTO candidateDTO = new CandidateDTO();
-            candidateDTO.setCandidateID(UUID.randomUUID().toString());
-            candidateDTO.setFullName("Test Candidate");
-            candidateDTO.setSummary("A passionate Software developer, having skills in Full Stack Development");
-            candidateDTO.setSkillDesc("Java, Spring, Kafka");
-            log.info("Producing object {}", candidateDTO);
-            kafkaCandidateTemplate.send(candidateTopic, candidateDTO);
-
-        };
-    }
+//    @Bean
+//    public CommandLineRunner commandLineRunner() {
+//        return args -> {
+//            CandidateDTO candidateDTO = new CandidateDTO();
+//            candidateDTO.setCandidateID(UUID.randomUUID().toString());
+//            candidateDTO.setFullName("Test Candidate");
+//            candidateDTO.setSummary("A passionate Software developer, having skills in Full Stack Development");
+//            candidateDTO.setSkillDesc("Java, Spring, Kafka");
+//            log.info("Producing object {}", candidateDTO);
+//            kafkaCandidateTemplate.send(candidateTopic, candidateDTO);
+//
+//            EmailDto emailDto = new EmailDto();
+//            emailDto.setEmail("testmailswa@gmail.com");
+//            emailDto.setSubject("Test Mail");
+//            emailDto.setMessage("Hello World !");
+//            log.info("Producing Email Object : {} ",emailDto);
+//            kafkaEmailTemplate.send(notificationTopic, emailDto);
+//        };
+//    }
 }
