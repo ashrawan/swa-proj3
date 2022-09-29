@@ -7,9 +7,9 @@ spec:
     app: job-service
   ports:
     - port: 80
-#      nodePort: 30084
+      nodePort: 30084
       targetPort: 8084
-  type: LoadBalancer
+  type: NodePort
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -58,10 +58,10 @@ spec:
                   name: core-configs
                   key: kafka_candidateTopic
             - name: KAFKA_APPLICATION_TOPIC
-                valueFrom:
-                  configMapKeyRef:
-                    name: core-configs
-                    key: kafka_applicationTopic
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: kafka_applicationTopic
 
             # Database: MongoDB
             - name: MONGO_URL
