@@ -51,8 +51,7 @@ public class WebSecurityConfig {
         return http.cors(Customizer.withDefaults())
                 .csrf().disable().httpBasic().and()
                 .authorizeRequests(ar -> ar
-                        .antMatchers("/", "/actuator/**").permitAll()
-                        .antMatchers("/auth/**").permitAll()
+                        .antMatchers("/", "/actuator/**", "/auth/**").permitAll()
                         .anyRequest().authenticated()
                 )
                 .exceptionHandling(eh -> eh

@@ -12,7 +12,6 @@ import org.springframework.security.config.annotation.web.configuration.EnableWe
 import org.springframework.security.config.http.SessionCreationPolicy;
 import org.springframework.security.web.SecurityFilterChain;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
-import org.springframework.security.web.authentication.www.BasicAuthenticationFilter;
 
 @Configuration
 @EnableWebSecurity
@@ -27,8 +26,7 @@ public class WebSecurityConfig {
 
         return http.csrf().disable().httpBasic().and()
                 .authorizeRequests(ar -> ar
-                        .antMatchers("/job/**").permitAll()
-                        .antMatchers("/test/**").permitAll()
+                        .antMatchers("/job/**", "/test/**").permitAll()
                         .antMatchers("/candidate/**").hasAnyAuthority(UserRole.ROLE_CANDIDATE.getValue(), UserRole.ROLE_RECRUITER.getValue())
                         .anyRequest().authenticated()
                 )
