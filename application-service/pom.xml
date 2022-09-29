@@ -22,6 +22,10 @@
     <dependencies>
 
         <dependency>
+            <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-security</artifactId>
+        </dependency>
+        <dependency>
             <groupId>com.swa</groupId>
             <artifactId>proj3-common-module</artifactId>
             <version>0.0.1-SNAPSHOT</version>
