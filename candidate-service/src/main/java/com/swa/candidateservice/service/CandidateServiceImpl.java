@@ -3,6 +3,7 @@ package com.swa.candidateservice.service;
 import com.swa.candidateservice.entity.Candidate;
 import com.swa.candidateservice.repository.CandidateRepository;
 import com.swa.proj3commonmodule.dto.CandidateDTO;
+import com.swa.proj3commonmodule.dto.EmailDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -20,6 +21,12 @@ public class CandidateServiceImpl implements CandidateService {
     @Value("${spring.kafka.custom.candidate-topic}")
     private String candidateTopic;
 
+    @Value("${spring.kafka.custom.notification-topic}")
+    private String notificationTopic;
+
+    @Autowired
+    private KafkaTemplate<String, EmailDto> kafkaEmailTemplate;
+
     @Autowired
     private KafkaTemplate<String, CandidateDTO> kafkaTemplate;
     @Autowired
@@ -33,11 +40,19 @@ public class CandidateServiceImpl implements CandidateService {
                 .fullName(candidateDTO.getFullName())
                 .skillDesc(candidateDTO.getSkillDesc())
                 .summary(candidateDTO.getSummary())
+                .email(candidateDTO.getEmail())
                 .build();
         Candidate saveCandidate = candidateRepository.save(candidate);
         candidateDTO.setCandidateID(saveCandidate.getCandidateID());
         kafkaTemplate.send(candidateTopic, candidateDTO);
         log.info("Candidate Save Successfully");
+
+        EmailDto emailDto = new EmailDto();
+        emailDto.setEmail(candidateDTO.getEmail());
+        emailDto.setSubject("Profile Created");
+        emailDto.setMessage("Hello \nYour Profile is created successfully.");
+        log.info("Producing Email Object : {} ",emailDto);
+        kafkaEmailTemplate.send(notificationTopic, emailDto);
         return candidateDTO;
     }
 
@@ -55,6 +70,7 @@ public class CandidateServiceImpl implements CandidateService {
                 .fullName(candidate.getFullName())
                 .skillDesc(candidate.getSkillDesc())
                 .address(candidate.getAddress())
+                .email(candidate.getEmail())
                 .build();
         log.info("Candidate Fetch Success with ID : ",id);
         return candidateDTO;
@@ -75,6 +91,7 @@ public class CandidateServiceImpl implements CandidateService {
                     candidateDTO.setSummary(candidate.getSummary());
                     candidateDTO.setAddress(candidate.getAddress());
                     candidateDTO.setSkillDesc(candidate.getSkillDesc());
+                    candidateDTO.setEmail(candidate.getEmail());
                     return candidateDTO;
                 }).collect(Collectors.toList());
         log.info("Candidate List Fetch Successfully");

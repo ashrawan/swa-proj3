@@ -30,6 +30,9 @@ public class JobServiceImpl implements JobService{
     @Autowired
     private KafkaTemplate<String, ApplicationResponse> kafkaTemplate;
 
+    @Autowired
+    private KafkaTemplate<String, JobDTO> kafkaJobTemplate;
+
     @Override
     public JobDTO createJob(JobDTO jobDTO) {
         Job job = Job.builder()
@@ -41,6 +44,8 @@ public class JobServiceImpl implements JobService{
                 .build();
         Job saveJob = jobRepository.save(job);
         jobDTO.setJobId(saveJob.getJobId());
+        kafkaJobTemplate.send(jobTopic, jobDTO);
+        log.info("Job Created Successfully!!");
         return jobDTO;
     }
 

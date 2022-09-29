@@ -4,6 +4,7 @@ import com.swa.candidateservice.entity.Candidate;
 import com.swa.candidateservice.mapper.Mapper;
 import com.swa.candidateservice.repository.CandidateRepository;
 import com.swa.proj3commonmodule.dto.CandidateDTO;
+import com.swa.proj3commonmodule.dto.EmailDto;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -11,6 +12,7 @@ import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.ArrayList;
@@ -31,6 +33,9 @@ public class CandidateServiceTest {
     private KafkaTemplate<String, CandidateDTO> kafkaTemplate;
 
     @Mock
+    private KafkaTemplate<String, EmailDto> kafkaEmailTemplate;
+
+    @Mock
     private CandidateRepository candidateRepository;
 
     @InjectMocks
@@ -44,6 +49,7 @@ public class CandidateServiceTest {
 
     private Candidate createCandidate() {
         Candidate candidate = new Candidate();
+        candidate.setEmail("testmailswa@gmail.com");
         candidate.setCandidateID("1234");
         candidate.setAddress("1000N 4Th ST Fairfield, IOWA");
         candidate.setSkillDesc("Java, Angular");
@@ -72,7 +78,7 @@ public class CandidateServiceTest {
     @Test
     public void findAllCandidate() {
         List<Candidate> candidateList = List.of(createCandidate(),
-                new Candidate("2121", "Shrawan Adhikari", "Senior Software Engineer", "Java, Angular, React", "100N 4th ST Fairfield, IOWA"));
+                new Candidate("2121", "Shrawan Adhikari", "abc@gmail.com", "Senior Software Engineer", "Java, Angular, React", "100N 4th ST Fairfield, IOWA"));
         List<CandidateDTO> candidateDTOList = new ArrayList<>();
         when(candidateRepository.findAll()).thenReturn(candidateList);
         for (Candidate candidate: candidateList) {

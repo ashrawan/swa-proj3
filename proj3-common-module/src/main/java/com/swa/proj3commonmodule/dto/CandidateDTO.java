@@ -15,6 +15,7 @@ public class CandidateDTO {
 
     private String candidateID;
     private String fullName;
+    private String email;
     private String summary;
     private String skillDesc;
     private String address;
