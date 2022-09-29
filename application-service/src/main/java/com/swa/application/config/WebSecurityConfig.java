@@ -1,4 +1,4 @@
-package com.swa.candidateservice.config;
+package com.swa.application.config;
 
 import com.swa.proj3commonmodule.security.JwtTokenFilter;
 import com.swa.proj3commonmodule.security.JwtTokenParser;
