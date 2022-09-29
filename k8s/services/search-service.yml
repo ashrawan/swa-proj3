@@ -26,10 +26,10 @@ spec:
     metadata:
       labels:
         app: search-service
-      annotations:
-        prometheus.io/scrape: "true"
-        prometheus.io/port: "8080"
-        prometheus.io/path: "/actuator/prometheus"
+#      annotations:
+#        prometheus.io/scrape: "true"
+#        prometheus.io/port: "8080"
+#        prometheus.io/path: "/actuator/prometheus"
     spec:
       containers:
         - name: search-service
