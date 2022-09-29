@@ -28,7 +28,7 @@ public class ApplicationServiceImpl implements ApplicationService {
     @Autowired private ApplicationMapper mapper;
     @Autowired private ApplicationRepository applicationRepository;
 
-    @Value("${spring.kafka.application_topic}")
+    @Value("${spring.kafka.custom.application-topic}")
     private String applicationTopic;
 
     @Autowired private ApplicationListener applicationListener;

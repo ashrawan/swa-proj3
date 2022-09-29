@@ -7,9 +7,20 @@ spring:
     name: application-service
 
   kafka:
-    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:127.0.0.1:9092}
-    application_topic: ${KAFKA_APPLICATION_TOPIC:application-events}
-    job_topic: ${KAFKA_JOB_TOPIC:job-events}
+    producer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP_ID:services-group}
+
+    #   Custom defined values
+    custom:
+      candidate-topic: ${KAFKA_CANDIDATE_TOPIC:candidate-events}
+      application-topic: ${KAFKA_APPLICATION_TOPIC:application-events}
+      job_topic: ${KAFKA_JOB_TOPIC:job-events}
+      notification-topic: ${KAFKA_NOTIFICATION_TOPIC:notification-events}
+#    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+#    application_topic: ${KAFKA_APPLICATION_TOPIC:application-events}
+#    job_topic: ${KAFKA_JOB_TOPIC:job-events}
 
   data:
     mongodb:
