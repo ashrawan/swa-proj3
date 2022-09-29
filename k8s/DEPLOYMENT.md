@@ -49,7 +49,7 @@ helm install mongo \
 --set auth.rootPassword=mongo \
 --set auth.username=mongo \
 --set auth.password=mongo \
---set auth.database=candidate-db \
+--set auth.database=application-db \
 bitnami/mongodb
 ```
 

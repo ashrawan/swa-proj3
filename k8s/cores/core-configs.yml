@@ -30,4 +30,5 @@ data:
   mongo_url: mongo-mongodb.default.svc.cluster.local
   mongo_candidateDBName: candidate-db
   mongo_recruiterDBName: recruiter-db
+  mongo_applicationDBName: application-db
 
