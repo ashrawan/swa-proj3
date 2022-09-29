@@ -32,7 +32,7 @@ spec:
       containers:
         - name: application-service
           image: ashrawan/proj3_application-service
-          imagePullPolicy: Always
+          imagePullPolicy: Never
           ports:
             - containerPort: 8085
           env:

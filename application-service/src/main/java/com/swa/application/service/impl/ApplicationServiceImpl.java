@@ -68,7 +68,7 @@ public class ApplicationServiceImpl implements ApplicationService {
 
     private ServerResponse modifyApplication(Application application) {
         String message;
-        if(application.getStatus())
+        if(application.getStatus() != null && application.getStatus())
             message = "You have already applied in this job.";
         else {
             application.setStatus(true);

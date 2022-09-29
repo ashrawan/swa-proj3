@@ -23,7 +23,7 @@ public class KafkaConsumerConfig {
     @Value("${spring.kafka.producer.bootstrap-servers}")
     private String bootstrapServer;
 
-    @Value("job-application-topic")
+    @Value("services-group")
     private String groupId;
 
     public Map<String, Object> consumerJsonConfig() {
