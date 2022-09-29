@@ -51,16 +51,26 @@ spec:
                 configMapKeyRef:
                   name: core-configs
                   key: kafka_searchServiceGroupId
-            - name: KAFKA_APPLICATION_TOPIC
-              valueFrom:
-                configMapKeyRef:
-                  name: core-configs
-                  key: kafka_applicationTopic
             - name: KAFKA_JOB_TOPIC
               valueFrom:
                 configMapKeyRef:
                   name: core-configs
                   key: kafka_jobTopic
+            - name: KAFKA_APPLICATION_TOPIC
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: kafka_applicationTopic
+            - name: KAFKA_CANDIDATE_TOPIC
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: kafka_candidateTopic
+            - name: KAFKA_NOTIFICATION_TOPIC
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: kafka_notificationTopic
 
             # Database: MongoDB
             - name: MONGO_URL
@@ -90,10 +100,7 @@ spec:
                 configMapKeyRef:
                   name: core-configs
                   key: zipkin_url
-            - name: ZIPKIN_ENABLED
-              value: true
 
-            # App Specific
             - name: JWT_SECRET_KEY
               valueFrom:
                 secretKeyRef:

@@ -16,15 +16,12 @@ spring:
     custom:
       candidate-topic: ${KAFKA_CANDIDATE_TOPIC:candidate-events}
       application-topic: ${KAFKA_APPLICATION_TOPIC:application-events}
-      job_topic: ${KAFKA_JOB_TOPIC:job-events}
+      job-topic: ${KAFKA_JOB_TOPIC:job-events}
       notification-topic: ${KAFKA_NOTIFICATION_TOPIC:notification-events}
-#    bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
-#    application_topic: ${KAFKA_APPLICATION_TOPIC:application-events}
-#    job_topic: ${KAFKA_JOB_TOPIC:job-events}
 
   data:
     mongodb:
-#      uri: mongodb://localhost:27017/${MYSQL_DB_NAME:application-db}
+      #      uri: mongodb://${MONGO_URL:localhost}:${MONGO_PORT:27017}/${MONGO_DATABASE:candidate-db}
       #      authentication-database: admin
       username: ${MONGO_USERNAME:mongo}
       password: ${MONGO_PASSWORD:mongo}
@@ -45,20 +42,3 @@ app:
   jwt:
     token:
       secret-key: ${JWT_SECRET_KEY:swa-proj1-jwt-secret}
-
-#  data:
-#    mongodb:
-#      host: localhost
-#      uri: mongodb://localhost:27017/${MYSQL_DB_NAME:application-db}
-#      port: 27017
-#      database: application-db
-#      username: root
-#      password: example
-
-#spring.data.mongodb.authentication-database=admin
-#spring.data.mongodb.auto-index-creation=true
-
-
-#app:
-#  url:
-#    job: ${JOB_URL:localhost:8081}

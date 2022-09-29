@@ -23,7 +23,7 @@ spring:
       group-id: ${KAFKA_CONSUMER_GROUP_ID:services-group}
 
     custom:
-      enable-listeners: ${KAFKA_ENABLE_LISTENERS:false} # set this to false, to disable all kafka listeners
+      enable-listeners: ${KAFKA_ENABLE_LISTENERS:true} # set this to false, to disable all kafka listeners
       candidate-topic: ${KAFKA_CANDIDATE_TOPIC:candidate-events}
       job-topic: ${KAFKA_JOB_TOPIC:job-events}
 

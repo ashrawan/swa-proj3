@@ -9,6 +9,7 @@ data:
   kafka_jobTopic: job-events
   kafka_candidateTopic: candidate-events
   kafka_applicationTopic: application-events
+  kafka_notificationTopic: notification-events
 
   # Caching: Redis
   redis_host: redis-master.default.svc.cluster.local

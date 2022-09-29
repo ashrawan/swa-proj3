@@ -28,11 +28,11 @@ spec:
         app: job-service
     spec:
       containers:
-        - name: candidate-service
+        - name: job-service
           image: ashrawan/proj3_job-service
           imagePullPolicy: Always
           ports:
-            - containerPort: 8084
+            - containerPort: 8083
           env:
             # PROFILE
             - name: SPRING_PROFILES_ACTIVE

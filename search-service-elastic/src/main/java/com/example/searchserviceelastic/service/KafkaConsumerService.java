@@ -27,7 +27,7 @@ public class KafkaConsumerService {
     public void consumeJobDTO(JobDTO jobDTO) {
         log.info("Received JobDTO {}", jobDTO);
         JobEntity jobEntity = jobMapper.toEntity(jobDTO);
-        JobEntity savedJob = jobService.update(jobEntity);
+        JobEntity savedJob = jobService.save(jobEntity);
         log.info("Successfully Saved Job {}", savedJob);
     }
 
@@ -36,7 +36,7 @@ public class KafkaConsumerService {
     public void consumeCandidateDTO(CandidateDTO candidateDTO) {
         log.info("Received CandidateDTO {}", candidateDTO);
         CandidateEntity candidateEntity = candidateMapper.toEntity(candidateDTO);
-        CandidateEntity savedCandidate = candidateService.update(candidateEntity);
+        CandidateEntity savedCandidate = candidateService.save(candidateEntity);
         log.info("Successfully Saved Candidate {}", savedCandidate);
     }
 

@@ -73,7 +73,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    @CachePut(value = "jobs", condition = "#result.jobId != null", key = "#result.jobId")
+    @CachePut(value = "jobs", condition = "#result.jobId != null", key = "#result.jobTitle")
     @CacheEvict(value = "jobs", key = "#jobEntity.title")
     public JobEntity save(JobEntity jobEntity) {
 
@@ -94,7 +94,7 @@ public class JobServiceImpl implements JobService {
     }
 
     @Override
-    @CachePut(value = "jobs", key = "#jobEntity.jobId")
+    @CachePut(value = "jobs", key = "#jobEntity.jobTitle")
     @CacheEvict(value = "jobs", key = "#jobEntity.title")
     public JobEntity update(JobEntity jobEntity) {
 
