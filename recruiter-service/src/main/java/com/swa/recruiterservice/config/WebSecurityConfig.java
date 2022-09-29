@@ -32,8 +32,7 @@ public class WebSecurityConfig {
         return http.cors(Customizer.withDefaults())
                 .csrf().disable().httpBasic().and()
                 .authorizeRequests(ar -> ar
-                        .antMatchers("recruiter/test/**").permitAll()
-                        .antMatchers("/**").permitAll() // TODO remove this
+                        .antMatchers("/").permitAll()
                         .anyRequest().authenticated()
                 )
                 .sessionManagement().sessionCreationPolicy(SessionCreationPolicy.STATELESS)
