@@ -2,14 +2,16 @@ apiVersion: v1
 kind: Service
 metadata:
   name: job-service
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
 spec:
   selector:
     app: job-service
   ports:
     - port: 80
-      nodePort: 30084
+#      nodePort: 30084
       targetPort: 8084
-  type: NodePort
+  type: ClusterIP
 ---
 apiVersion: apps/v1
 kind: Deployment
@@ -58,10 +60,10 @@ spec:
                   name: core-configs
                   key: kafka_candidateTopic
             - name: KAFKA_APPLICATION_TOPIC
-              valueFrom:
-                configMapKeyRef:
-                  name: core-configs
-                  key: kafka_applicationTopic
+                valueFrom:
+                  configMapKeyRef:
+                    name: core-configs
+                    key: kafka_applicationTopic
 
             # Database: MongoDB
             - name: MONGO_URL
