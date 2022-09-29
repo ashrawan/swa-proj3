@@ -19,10 +19,11 @@ import java.util.Map;
 @Configuration
 public class KafkaConsumerConfig {
 
-    @Value("${spring.kafka.bootstrap-servers}")
+    @Value("${spring.kafka.producer.bootstrap-servers}")
     private String bootstrapServer;
 
-    @Value("application-job-topic")
+//    @Value("application-job-topic")
+    @Value("${spring.kafka.consumer.group-id}")
     private String groupId;
 
     public Map<String, Object> consumerJsonConfig() {

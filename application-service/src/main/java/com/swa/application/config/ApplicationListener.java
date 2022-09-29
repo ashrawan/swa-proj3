@@ -15,7 +15,7 @@ public class ApplicationListener {
 
     @Autowired private ApplicationRepository applicationRepository;
 
-    @KafkaListener(topics = "${job_topic}", groupId = "services-group"
+    @KafkaListener(topics = {"${spring.kafka.custom.job-topic}"}, groupId = "${spring.kafka.consumer.group-id}"
             , containerFactory = "kafkaListenerJsonFactory" //,autoStartup = "false"
     )
     void listener(ApplicationResponse response){
