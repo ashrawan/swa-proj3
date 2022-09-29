@@ -40,12 +40,6 @@ public class ExampleJobService {
             log.info("Producing object {}", candidateDTO);
             kafkaCandidateTemplate.send(candidateTopic, candidateDTO);
 
-            EmailDto emailDto = new EmailDto();
-            emailDto.setEmail("testmailswa@gmail.com");
-            emailDto.setSubject("Test Mail");
-            emailDto.setMessage("Hello World !");
-            log.info("Producing Email Object : {} ",emailDto);
-            kafkaEmailTemplate.send(notificationTopic, emailDto);
         };
     }
 }

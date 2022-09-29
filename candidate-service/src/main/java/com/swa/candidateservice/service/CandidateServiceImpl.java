@@ -3,6 +3,7 @@ package com.swa.candidateservice.service;
 import com.swa.candidateservice.entity.Candidate;
 import com.swa.candidateservice.repository.CandidateRepository;
 import com.swa.proj3commonmodule.dto.CandidateDTO;
+import com.swa.proj3commonmodule.dto.EmailDto;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
@@ -19,6 +20,12 @@ public class CandidateServiceImpl implements CandidateService {
 
     @Value("${spring.kafka.custom.candidate-topic}")
     private String candidateTopic;
+
+    @Value("${spring.kafka.custom.notification-topic}")
+    private String notificationTopic;
+
+    @Autowired
+    private KafkaTemplate<String, EmailDto> kafkaEmailTemplate;
 
     @Autowired
     private KafkaTemplate<String, CandidateDTO> kafkaTemplate;
@@ -38,6 +45,13 @@ public class CandidateServiceImpl implements CandidateService {
         candidateDTO.setCandidateID(saveCandidate.getCandidateID());
         kafkaTemplate.send(candidateTopic, candidateDTO);
         log.info("Candidate Save Successfully");
+
+        EmailDto emailDto = new EmailDto();
+        emailDto.setEmail(candidateDTO.getEmail());
+        emailDto.setSubject("Profile Created");
+        emailDto.setMessage("Hello \nYour Profile is created successfully.");
+        log.info("Producing Email Object : {} ",emailDto);
+        kafkaEmailTemplate.send(notificationTopic, emailDto);
         return candidateDTO;
     }
 
