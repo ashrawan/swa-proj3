@@ -33,7 +33,7 @@ public class WebSecurityConfig {
         return http.cors(Customizer.withDefaults())
                 .csrf().disable().httpBasic().and()
                 .authorizeRequests(ar -> ar
-                        .antMatchers("/").permitAll()
+                        .antMatchers("/", "/actuator/**").permitAll()
                         .antMatchers("/job/**").permitAll()
                         .antMatchers("/candidate/**").hasAnyAuthority(UserRole.ROLE_CANDIDATE.getValue(), UserRole.ROLE_RECRUITER.getValue())
                         .anyRequest().authenticated()
