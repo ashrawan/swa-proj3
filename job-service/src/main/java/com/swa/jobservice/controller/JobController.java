@@ -29,9 +29,5 @@ public class JobController {
         return new ResponseEntity<>(jobService.findAll(), HttpStatus.OK);
     }
 
-    @GetMapping
-    public ResponseEntity<?> test() {
-        return new ResponseEntity<>("test", HttpStatus.OK);
-    }
 
 }

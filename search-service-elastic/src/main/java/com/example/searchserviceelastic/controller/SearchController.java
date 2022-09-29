@@ -23,7 +23,7 @@ public class SearchController {
     private CandidateService candidateService;
 
     @RequestMapping(value = "job/all", method = RequestMethod.GET)
-    public ResponseEntity<?> jobDataResponse(@RequestParam("title") String title) {
+    public ResponseEntity<?> jobDataResponse(@RequestParam(value = "title", required = false) String title) {
         List<JobEntity> allJobs = jobService.findAllByTitle(title);
         return new ResponseEntity<>(allJobs, HttpStatus.OK);
     }

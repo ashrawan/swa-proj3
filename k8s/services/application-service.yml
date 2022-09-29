@@ -3,14 +3,16 @@ apiVersion: v1
 kind: Service
 metadata:
   name: application-service
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
 spec:
   selector:
     app: application-app
   ports:
     - port: 80
-      nodePort: 30085 # expose to local
+#      nodePort: 30085 # expose to local
       targetPort: 8085
-  type: NodePort
+  type: ClusterIP
 ---
 # Deployment
 apiVersion: apps/v1
@@ -30,7 +32,7 @@ spec:
       containers:
         - name: application-service
           image: ashrawan/proj3_application-service
-          imagePullPolicy: Never
+          imagePullPolicy: Always
           ports:
             - containerPort: 8085
           env:

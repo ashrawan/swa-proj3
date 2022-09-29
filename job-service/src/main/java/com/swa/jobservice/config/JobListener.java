@@ -14,8 +14,8 @@ public class JobListener {
     @Autowired
     private JobService jobService;
 
-    @KafkaListener(topics = {"${spring.custom.application-topic}"}, containerFactory = "kafkaListenerJsonFactory",
-            groupId = "services-group" //, autoStartup = "${spring.kafka.custom.enable-listeners}"
+    @KafkaListener(topics = {"${spring.kafka.custom.application-topic}"}, containerFactory = "kafkaListenerJsonFactory",
+            groupId = "${spring.kafka.consumer.group-id}" //, autoStartup = "${spring.kafka.custom.enable-listeners}"
              )
     void listener(JobRequest dto) {
         log.info("----- JobListener received ::: " + dto.toString() + " ;)");

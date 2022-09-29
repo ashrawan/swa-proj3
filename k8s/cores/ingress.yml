@@ -36,3 +36,24 @@ spec:
                 name: search-service
                 port:
                   number: 80
+          - path: /job
+            pathType: Prefix
+            backend:
+              service:
+                name: job-service
+                port:
+                  number: 80
+          - path: /recruiter
+            pathType: Prefix
+            backend:
+              service:
+                name: recruiter-service
+                port:
+                  number: 80
+#          - path: /application
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: application-service
+#                port:
+#                  number: 80
