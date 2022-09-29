@@ -43,6 +43,17 @@ app:
     token:
       secret-key: ${JWT_SECRET_KEY:swa-proj1-jwt-secret}
 
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
 # Circuit Breaker Config
 resilience4j:
   circuitbreaker:

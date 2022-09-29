@@ -15,7 +15,7 @@ data:
   redis_port: '6379'
 
   # Tracing: Zipkin
-  zipkin_url: http://swa3-zipkin # 9411
+  zipkin_url: swa3-zipkin # 9411
 
   # === Database ====
   # Elastic Search

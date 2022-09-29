@@ -26,6 +26,10 @@ spec:
     metadata:
       labels:
         app: search-service
+      annotations:
+        prometheus.io/scrape: "true"
+        prometheus.io/port: "8080"
+        prometheus.io/path: "/actuator/prometheus"
     spec:
       containers:
         - name: search-service
@@ -83,6 +87,8 @@ spec:
                 configMapKeyRef:
                   name: core-configs
                   key: zipkin_url
+            - name: ZIPKIN_ENABLED
+              value: true
 
             # Database: Elastic Search
             - name: ELASTIC_HOST

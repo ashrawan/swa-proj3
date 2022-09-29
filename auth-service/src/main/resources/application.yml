@@ -18,6 +18,15 @@ spring:
     hibernate:
       ddl-auto: update
 
+  # Tracing: Logs
+  sleuth:
+    enabled: ${SLEUTH_ENABLED:true}
+    sampler:
+      probability: 1
+  zipkin:
+    enabled: ${ZIPKIN_ENABLED:false}
+    base-url: ${ZIPKIN_URL:http://localhost:9411/}
+
 app:
   jwt:
     token:
@@ -25,7 +34,12 @@ app:
       expire-seconds: 86400
 
 management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
   endpoints:
     web:
       exposure:
-        include: "*"
+        include: health,info,prometheus

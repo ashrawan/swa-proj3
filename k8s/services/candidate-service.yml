@@ -81,6 +81,16 @@ spec:
                 secretKeyRef:
                   name: core-secrets
                   key: mongo_pass
+
+            # Tracing: Zipkin & Sleuth
+            - name: ZIPKIN_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: zipkin_url
+            - name: ZIPKIN_ENABLED
+              value: true
+
             # App Specific
             - name: JWT_SECRET_KEY
               valueFrom:
