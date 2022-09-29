@@ -2,6 +2,7 @@ package com.swa.jobservice.service;
 
 import com.swa.jobservice.entity.Job;
 import com.swa.jobservice.repository.JobRepository;
+import com.swa.proj3commonmodule.dto.EmailDto;
 import com.swa.proj3commonmodule.dto.JobDTO;
 import com.swa.proj3commonmodule.dto.JobRequest;
 import com.swa.proj3commonmodule.response.ApplicationResponse;
@@ -27,6 +28,12 @@ public class JobServiceImpl implements JobService{
     @Value("${spring.kafka.custom.job_topic}")
     private String jobTopic;
 
+    @Value("${spring.kafka.custom.notification-topic}")
+    private String notificationTopic;
+
+    @Autowired
+    private KafkaTemplate<String, EmailDto> kafkaEmailTemplate;
+
     @Autowired
     private KafkaTemplate<String, ApplicationResponse> kafkaTemplate;
 
@@ -46,6 +53,13 @@ public class JobServiceImpl implements JobService{
         jobDTO.setJobId(saveJob.getJobId());
         kafkaJobTemplate.send(jobTopic, jobDTO);
         log.info("Job Created Successfully!!");
+
+        EmailDto emailDto = new EmailDto();
+        emailDto.setEmail("testmailswa@gmail.com");
+        emailDto.setSubject("New Job Created");
+        emailDto.setMessage("Hello \n New Job is created.");
+        log.info("Producing Email Object : {} ",emailDto);
+        kafkaEmailTemplate.send(notificationTopic, emailDto);
         return jobDTO;
     }
 

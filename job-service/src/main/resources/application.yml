@@ -14,6 +14,7 @@ spring:
       candidate-topic: ${KAFKA_CANDIDATE_TOPIC:candidate-events}
       application-topic: ${KAFKA_APPLICATION_TOPIC:application-events}
       job_topic: ${KAFKA_JOB_TOPIC:job-events}
+      notification-topic: ${KAFKA_NOTIFICATION_TOPIC:notification-events}
 
   application:
     name: ${APPLICATION_NAME:job-service}

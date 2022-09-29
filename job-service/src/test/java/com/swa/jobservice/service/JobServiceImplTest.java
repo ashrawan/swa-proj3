@@ -2,13 +2,17 @@ package com.swa.jobservice.service;
 
 import com.swa.jobservice.entity.Job;
 import com.swa.jobservice.repository.JobRepository;
+import com.swa.proj3commonmodule.dto.EmailDto;
 import com.swa.proj3commonmodule.dto.JobDTO;
+import com.swa.proj3commonmodule.response.ApplicationResponse;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
 import org.mockito.junit.jupiter.MockitoExtension;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.kafka.core.KafkaTemplate;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -24,6 +28,15 @@ class JobServiceImplTest {
 
     @Mock
     JobRepository jobRepository;
+
+    @Mock
+    private KafkaTemplate<String, EmailDto> kafkaEmailTemplate;
+
+    @Mock
+    private KafkaTemplate<String, ApplicationResponse> kafkaTemplate;
+
+    @Mock
+    private KafkaTemplate<String, JobDTO> kafkaJobTemplate;
 
     @InjectMocks
     JobServiceImpl jobService;
