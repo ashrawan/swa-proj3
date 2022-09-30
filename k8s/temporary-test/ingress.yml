@@ -1,0 +1,59 @@
+apiVersion: networking.k8s.io/v1
+kind: Ingress
+metadata:
+  name: swa-ingress
+  annotations:
+    kubernetes.io/ingress.class: "gce"
+    kubernetes.io/ingress.allow-http: "true"
+spec:
+#  defaultBackend:
+#    service:
+#      name: frontend-svc
+#      port:
+#        number: 80
+  rules:
+    - host: ""
+      http:
+        paths:
+          - path: /auth
+            pathType: Prefix
+            backend:
+              service:
+                name: auth-service
+                port:
+                  number: 80
+          - path: /candidate
+            pathType: Prefix
+            backend:
+              service:
+                name: candidate-service
+                port:
+                  number: 80
+          - path: /search
+            pathType: Prefix
+            backend:
+              service:
+                name: search-service
+                port:
+                  number: 80
+          - path: /job
+            pathType: Prefix
+            backend:
+              service:
+                name: job-service
+                port:
+                  number: 80
+          - path: /recruiter
+            pathType: Prefix
+            backend:
+              service:
+                name: recruiter-service
+                port:
+                  number: 80
+#          - path: /application
+#            pathType: Prefix
+#            backend:
+#              service:
+#                name: application-service
+#                port:
+#                  number: 80

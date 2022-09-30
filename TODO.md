@@ -7,6 +7,7 @@
 - [X] Recruiter Service
 - [X] Search Service
 - [X] Notification Service
+- [X] Application Service
 
 > __8080__: Reserved (Don't Use this)    
 > __8081-8099__: Application micro-services    
@@ -19,8 +20,8 @@
 | candidate-service    | 8082 |
 | job-service          | 8083 |
 | recruiter-service    | 8084 |
-| --------------       | ---- |
-| notification-service | 8087 |
+| application-service  | 8085 |
+| notification-service | 8087 | 
 | --------------       | ---- |
 | auth-service         | 8070 |
 

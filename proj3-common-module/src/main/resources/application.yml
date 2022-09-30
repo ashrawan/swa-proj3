@@ -1,0 +1,7 @@
+#security.basic.enable: false
+#
+#app:
+#  jwt:
+#    token:
+#      secret-key: ${JWT_SECRET_KEY:swa-proj1-jwt-secret}
+#      expire-seconds: 86400

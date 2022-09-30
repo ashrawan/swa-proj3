@@ -1,0 +1,120 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: search-service
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+  selector:
+    app: search-service
+  ports:
+    - port: 80
+#      nodePort: 30081 # exposing to local, to access this service
+      targetPort: 8081
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: search-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: search-service
+  template:
+    metadata:
+      labels:
+        app: search-service
+#      annotations:
+#        prometheus.io/scrape: "true"
+#        prometheus.io/port: "8080"
+#        prometheus.io/path: "/actuator/prometheus"
+    spec:
+      containers:
+        - name: search-service
+          image: ashrawan/proj3_search-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8081
+          env:
+            # PROFILE
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+
+            # Broker: Kafka
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: kafka_BootStrapServers
+            - name: KAFKA_CONSUMER_GROUP_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: kafka_searchServiceGroupId
+            - name: KAFKA_JOB_TOPIC
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: kafka_jobTopic
+            - name: KAFKA_CANDIDATE_TOPIC
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: kafka_candidateTopic
+
+            # Caching: Redis
+            - name: REDIS_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: redis_host
+            - name: REDIS_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: redis_port
+            - name: REDIS_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: core-secrets
+                  key: redis_password
+
+            # Tracing: Zipkin & Sleuth
+            - name: ZIPKIN_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: zipkin_url
+            - name: ZIPKIN_ENABLED
+              value: "true"
+
+            # Database: Elastic Search
+            - name: ELASTIC_HOST
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: elastic_host
+            - name: ELASTIC_PORT
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: elastic_port
+            - name: ELASTIC_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: core-secrets
+                  key: elastic_username
+            - name: ELASTIC_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: core-secrets
+                  key: elastic_password
+
+            # App Specific
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: core-secrets
+                  key: jwt-secret-key

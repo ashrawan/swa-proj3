@@ -1,0 +1,63 @@
+server:
+  port: 8087
+
+spring:
+
+  # Kafka Config
+  kafka:
+    consumer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+      group-id: ${KAFKA_CONSUMER_GROUP_ID:services-group}
+    custom:
+      enable-listeners: true # Set this false, to disable all kafka Listeners
+      notification-topic: ${KAFKA_NOTIFICATION_TOPIC:notification-events}
+
+  # Mail config
+  mail:
+    host: smtp.gmail.com
+    username: ${MAIL_USERNAME:sanjayakoju42@gmail.com}
+    password: ${MAIL_PASSWORD:fxahxqzfghwliack}
+    properties:
+      mail:
+        smtp:
+          auth: true
+          socketFactory:
+            port: 465
+            class: javax.net.ssl.SSLSocketFactory
+            fallback: false
+
+  # Mail Config
+  #  mail:
+  #    properties:
+  #      mail:
+  #        smtp:
+  #          starttls:
+  #            enable: 'true'
+  #          timeout: '5000'
+  #          auth: 'true'
+  #          connectiontimeout: '5000'
+  #          writetimeout: '5000'
+  #          ssl:
+  #            trust: host
+  #    host: smtp.gmail.com
+  #    username: sanjayakoju42@gmail.com
+  #    password: fxahxqzfghwliack
+  #    port: '587'
+
+support:
+  test:
+    email: testmailswa@gmail.com
+    password: sanjaya77
+
+
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+

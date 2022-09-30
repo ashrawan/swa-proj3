@@ -1,0 +1,105 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: job-service
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+  selector:
+    app: job-service
+  ports:
+    - port: 80
+      #      nodePort: 30084
+      targetPort: 8084
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: job-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: job-service
+  template:
+    metadata:
+      labels:
+        app: job-service
+    spec:
+      containers:
+        - name: job-service
+          image: ashrawan/proj3_job-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8083
+          env:
+            # PROFILE
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+
+            # Broker: Kafka
+            - name: KAFKA_BOOTSTRAP_SERVERS
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: kafka_BootStrapServers
+            - name: KAFKA_CONSUMER_GROUP_ID
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: kafka_searchServiceGroupId
+            - name: KAFKA_JOB_TOPIC
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: kafka_jobTopic
+            - name: KAFKA_CANDIDATE_TOPIC
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: kafka_candidateTopic
+            - name: KAFKA_APPLICATION_TOPIC
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: kafka_applicationTopic
+
+            # Database: MongoDB
+            - name: MONGO_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: mongo_url
+            - name: MONGO_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: mongo_candidateDBName
+            - name: MONGO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: core-secrets
+                  key: mongo_user
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: core-secrets
+                  key: mongo_pass
+
+            # Tracing: Zipkin & Sleuth
+            - name: ZIPKIN_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: zipkin_url
+            - name: ZIPKIN_ENABLED
+              value: true
+
+            # App Specific
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: core-secrets
+                  key: jwt-secret-key
+

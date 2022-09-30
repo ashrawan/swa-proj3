@@ -17,7 +17,9 @@
    mvn clean install -DskipTests
    docker compose up
     ```
-
+  
+> Check docs/dev folder README, to start the required services. "MongoDB", "Kafka", "Redis" ..  
+  
 ### __Deployment K8S:__
 ```cmd
 mvn clean install -DskipTests
@@ -25,6 +27,7 @@ mvn clean install -DskipTests
 # If minkiube, also run -> minikube docker-env
 docker compose build
 
+# app-cores: All configs and DB, services: all services
 kubectl create -f k8s/app-cores
 kubectl create -f services
 

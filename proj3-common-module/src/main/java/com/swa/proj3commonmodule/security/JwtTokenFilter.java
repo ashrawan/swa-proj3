@@ -1,5 +1,6 @@
 package com.swa.proj3commonmodule.security;
 
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.util.StringUtils;
@@ -11,21 +12,27 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
+@Slf4j
 public class JwtTokenFilter extends OncePerRequestFilter {
 
-    private JwtTokenProvider jwtTokenProvider;
+    private JwtTokenParser jwtTokenParser;
 
-    public JwtTokenFilter(JwtTokenProvider jwtTokenProvider) {
-        this.jwtTokenProvider = jwtTokenProvider;
+    public JwtTokenFilter(JwtTokenParser jwtTokenParser) {
+        this.jwtTokenParser = jwtTokenParser;
     }
 
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain chain) throws ServletException, IOException {
-        String token = jwtTokenProvider.getTokenFromRequestHeader(request);
-        if (StringUtils.hasText(token) && jwtTokenProvider.validateToken(token, request)) {
-            Authentication auth = jwtTokenProvider.getAuthenticationFromTokenString(token, request);
+        log.info("Invoked OncePerRequest JwtTokenFilter");
+        String token = jwtTokenParser.getTokenFromRequestHeader(request);
+        if (StringUtils.hasText(token) && jwtTokenParser.validateToken(token, request)) {
+            log.info("Jwt Token Filter, processing authenticated request");
+            Authentication auth = jwtTokenParser.getAuthenticationFromTokenString(token, request);
             if (auth != null) {
                 SecurityContextHolder.getContext().setAuthentication(auth);
+                log.info("Authentication Object set for the current request");
+            } else {
+                log.error("Couldn't process the Authentication for the current request");
             }
         }
         chain.doFilter(request, response);

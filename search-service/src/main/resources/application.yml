@@ -1,0 +1,70 @@
+server:
+  port: 8081
+
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+spring:
+  application:
+    name: search-service
+
+  data:
+    cassandra:
+      keyspaceName: search_db
+      contact-points: 127.0.0.1
+      username: cassandra
+      password: cassandra
+      port: 9042
+      local-datacenter: datacenter1
+      schema-action: recreate_drop_unused
+      request:
+        timeout: 10s
+      connection:
+        init-query-timeout: 20s
+        connect-timeout: 20s
+
+  # Kafka Config
+  kafka:
+    #    enabled: false
+    consumer:
+      bootstrap-servers: localhost:9092
+      group-id: services-group
+
+    custom:
+      enable-listeners: true # set this to false, to disable all kafka listeners
+      candidate-topic: candidate-events
+      job-topic: job-events
+
+
+    # Caching: Redis Config
+  cache:
+    type: redis
+  redis:
+    host: localhost
+    port: 6379
+    password: redis-pass
+
+  # Tracing: Logs
+  sleuth:
+    enabled: false
+    sampler:
+      probability: 1
+  zipkin:
+    base-url: http://localhost:9411/
+
+logging:
+  level:
+    org.springframework.cache.*: trace
+
+app:
+  jwt:
+    token:
+      secret-key: ${JWT_SECRET_KEY:swa-proj1-jwt-secret}

@@ -1,0 +1,44 @@
+server:
+  port: ${SERVER_PORT:8083}
+
+
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:127.0.0.1:9092}
+    consumer:
+      group-id: ${KAFKA_CONSUMER_GROUP_ID:services-group}
+
+    #   Custom defined values
+    custom:
+      candidate-topic: ${KAFKA_CANDIDATE_TOPIC:candidate-events}
+      application-topic: ${KAFKA_APPLICATION_TOPIC:application-events}
+      job_topic: ${KAFKA_JOB_TOPIC:job-events}
+      notification-topic: ${KAFKA_NOTIFICATION_TOPIC:notification-events}
+
+  application:
+    name: ${APPLICATION_NAME:job-service}
+  data:
+    mongodb:
+      username: ${MONGO_USERNAME:mongo}
+      password: ${MONGO_PASSWORD:mongo}
+      database: ${MONGO_DATABASE:job-db}
+      port: 27017
+      host: ${MONGO_URL:localhost}
+      auto-index-creation: true
+
+app:
+  jwt:
+    token:
+      secret-key: ${JWT_SECRET_KEY:swa-proj1-jwt-secret}
+
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus

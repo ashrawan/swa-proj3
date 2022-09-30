@@ -1,0 +1,59 @@
+apiVersion: v1
+kind: Service
+metadata:
+  name: notification-service
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+  selector:
+    app: notification-service
+  ports:
+    - port: 80
+#      nodePort: 30087
+      targetPort: 8087
+  type: ClusterIP
+---
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: notification-service
+spec:
+  replicas: 3
+  selector:
+    matchLabels:
+      app: notification-service
+  template:
+    metadata:
+      labels:
+        app: notification-service
+    spec:
+      containers:
+        - name: notification-service
+          image: ashrawan/proj3_notification-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8087
+          env:
+            # PROFILE
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+            - name: MAIL_USERNAME
+              value: sanjayakoju42@gmail.com
+            - name: MAIL_PASSWORD
+              value: fxahxqzfghwliack
+
+            # Tracing: Zipkin & Sleuth
+            - name: ZIPKIN_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: zipkin_url
+            - name: ZIPKIN_ENABLED
+              value: true
+
+            # App Specific
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: core-secrets
+                  key: jwt-secret-key

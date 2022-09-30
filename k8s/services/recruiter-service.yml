@@ -1,0 +1,79 @@
+# Service
+apiVersion: v1
+kind: Service
+metadata:
+  name: recruiter-service
+  annotations:
+    cloud.google.com/neg: '{"ingress": true}'
+spec:
+  selector:
+    app: recruiter-app
+  ports:
+    - port: 80
+#      nodePort: 30084 # expose to local
+      targetPort: 8084
+  type: ClusterIP
+---
+# Deployment
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: recruiter-service
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: recruiter-app
+  template:
+    metadata:
+      labels:
+        app: recruiter-app
+    spec:
+      containers:
+        - name: recruiter-app
+          image: ashrawan/proj3_recruiter-service
+          imagePullPolicy: Always
+          ports:
+            - containerPort: 8084
+          env:
+            # PROFILE
+            - name: SPRING_PROFILES_ACTIVE
+              value: prod
+
+            # Database: MongoDB
+            - name: MONGO_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: mongo_url
+            - name: MONGO_DATABASE
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: mongo_candidateDBName
+            - name: MONGO_USERNAME
+              valueFrom:
+                secretKeyRef:
+                  name: core-secrets
+                  key: mongo_user
+            - name: MONGO_PASSWORD
+              valueFrom:
+                secretKeyRef:
+                  name: core-secrets
+                  key: mongo_pass
+
+            # Tracing: Zipkin & Sleuth
+            - name: ZIPKIN_URL
+              valueFrom:
+                configMapKeyRef:
+                  name: core-configs
+                  key: zipkin_url
+            - name: ZIPKIN_ENABLED
+              value: true
+
+            # App Specific
+            - name: JWT_SECRET_KEY
+              valueFrom:
+                secretKeyRef:
+                  name: core-secrets
+                  key: jwt-secret-key

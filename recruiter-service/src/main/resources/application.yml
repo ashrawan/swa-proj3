@@ -1,0 +1,77 @@
+server:
+  port: 8084
+
+spring:
+  kafka:
+    producer:
+      bootstrap-servers: ${KAFKA_BOOTSTRAP_SERVERS:localhost:9092}
+    consumer:
+      group-id: group
+
+    #   Custom defined values
+#    topic: recruiter-events
+    custom:
+      recruiter-topic: ${KAFKA_RECRUITER_TOPIC:recruiter-events}
+
+  # Service Name
+  application:
+    name: ${APPLICATION_NAME:recruiter-service}
+
+  # Mongo DB Config
+  data:
+    mongodb:
+      #      uri: mongodb://${MONGO_URL:localhost}:${MONGO_PORT:27017}/${MONGO_DATABASE:candidate-db}
+      #      authentication-database: admin
+      username: ${MONGO_USERNAME:mongo}
+      password: ${MONGO_PASSWORD:mongo}
+      database: ${MONGO_DATABASE:recruiter-db}
+      port: 27017
+      host: ${MONGO_URL:localhost}
+#      uri: ${MONGO_URL:mongodb://localhost:${MONGO_PORT:27017}/${MONGO_DATABASE:recruiter-db}}
+      auto-index-creation: true
+
+  # Sleuth and Zipkin Config (Used for distributed tracing and logs)
+  sleuth:
+    sampler:
+      percentage: 1 # 1 Indicate Sleuth send 100 percent log to the zipkin (by default for performance issue spring sleuth send 10 percent log to zipkin in enterprise)
+  zipkin:
+    enabled: ${ZIPKIN_ENABLED:false}
+    baseUrl: ${ZIPKIN_URL:http://localhost:9411/}
+
+app:
+  jwt:
+    token:
+      secret-key: ${JWT_SECRET_KEY:swa-proj1-jwt-secret}
+
+management:
+  endpoint:
+    metrics:
+      enabled: true
+    prometheus:
+      enabled: true
+  endpoints:
+    web:
+      exposure:
+        include: health,info,prometheus
+
+# Circuit Breaker Config
+resilience4j:
+  circuitbreaker:
+    configs:
+      default:
+        registerHealthIndicator: true # Default false
+    instances:
+      defaultsForCandidateServiceApp: # Instance name
+        minimumNumberOfCalls: 5 # By Default 50 calls
+        failureRateThreshold: 50
+        waitDurationInOpenState: 30000
+        permitNumberOfCallsInHalfOpenState: 2
+
+  retry:
+    configs:
+      default:
+        registerHealthIndicator: true
+    instances:
+      retryForCandidates:
+        maxRetryAttempts: 3
+        waitDuration: 2000

@@ -1,0 +1,19 @@
+version: '3.9'
+
+services:
+
+  zipkin:
+    image: openzipkin/zipkin-slim:latest
+    container_name: zipkin
+    network_mode: host
+    # Environment settings are defined here https://github.com/openzipkin/zipkin/blob/master/zipkin-server/README.md#environment-variables
+    environment:
+      - STORAGE_TYPE=mem
+      - MYSQL_HOST=mysql
+      # Uncomment to enable self-tracing
+      # - SELF_TRACING_ENABLED=true
+      # Uncomment to increase heap size
+      # - JAVA_OPTS=-Xms128m -Xmx128m -XX:+ExitOnOutOfMemoryError
+    ports:
+      - 9411:9411
+    # command: --logging.level.zipkin2=DEBUG
