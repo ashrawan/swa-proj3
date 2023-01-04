@@ -1,5 +1,7 @@
-### Mind Map
-![Mind Map](docs/SWA2MindMap.jpg)
+# Introduction
+### Microservice-based application development using Spring Boot, Spring Security, Spring Cloud, Kafka, Redis, Zipkin, MySQL, MongoDB, Elasticsearch, Docker and Kubernetes.
+
+---
 
 ## # How to run ? 
 
