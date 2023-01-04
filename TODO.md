@@ -1,4 +1,7 @@
 
+### Mind Map (Initial Phase)
+![Mind Map](docs/SWA2MindMap.jpg)
+
 ### TODO: Create Basic Structure
 
 - [X] Auth Service
